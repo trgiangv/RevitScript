@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <NoWarn>CS0649;CS0169</NoWarn>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>true</ImplicitUsings>
+        <TargetFramework>net8.0</TargetFramework>
+        <NukeRootDirectory>..</NukeRootDirectory>
+        <NukeScriptDirectory>..</NukeScriptDirectory>
+        <NukeTelemetryVersion>1</NukeTelemetryVersion>
+        <Configurations>Debug;Release;Debug R20;Debug R21;Debug R22;Debug R23;Debug R24;Debug R25;Release R20;Release R21;Release R22;Release R23;Release R24;Release R25</Configurations>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Nuke.Common" Version="8.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Nuke.Common"/>
+        <Using Include="Nuke.Common.IO"/>
+        <Using Include="Serilog"/>
+    </ItemGroup>
+
+</Project>

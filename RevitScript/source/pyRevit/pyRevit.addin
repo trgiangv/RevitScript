@@ -1,0 +1,11 @@
+﻿<RevitAddIns>
+    <AddIn Type="Application">
+        <Name>pyRevit</Name>
+        <Assembly>pyRevit/pyRevit.dll</Assembly>
+        <AddInId>F215FF0F-6B8B-4B2E-B04C-82423A3EE925</AddInId>
+        <FullClassName>pyRevit.Application</FullClassName>
+        <VendorId>Development</VendorId>
+        <VendorDescription></VendorDescription>
+        <VendorEmail></VendorEmail>
+    </AddIn>
+</RevitAddIns>
