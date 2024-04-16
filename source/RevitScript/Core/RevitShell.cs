@@ -1,4 +1,4 @@
-﻿namespace pyRevit.Core;
+﻿namespace RevitScript.Core;
 
 /// <summary>
 ///     The class contains wrapping methods for working with the Revit API

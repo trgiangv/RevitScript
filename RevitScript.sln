@@ -12,7 +12,7 @@ Project("{A5339D85-7574-48C7-B592-BF082C6AF422}") = "Build", "build\Build.csproj
 EndProject
 Project("{A5339D85-7574-48C7-B592-BF082C6AF422}") = "Installer", "install\Installer.csproj", "{1AB1DDE7-442A-47E7-A470-36A158F2F922}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pyRevit", "source\pyRevit\pyRevit.csproj", "{2D87EB56-50F3-4A33-ABCF-F78916059267}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RevitScript", "source\RevitScript\RevitScript.csproj", "{2D87EB56-50F3-4A33-ABCF-F78916059267}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

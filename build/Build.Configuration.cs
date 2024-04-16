@@ -14,7 +14,7 @@
 
         InstallersMap = new()
         {
-            { Solution.Installer, Solution.pyRevit }
+            { Solution.Installer, Solution.RevitScript }
         };
     }
 }

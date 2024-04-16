@@ -3,7 +3,7 @@ using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 
-namespace pyRevit.Config;
+namespace RevitScript.Config;
 
 /// <summary>
 ///     Application logging configuration

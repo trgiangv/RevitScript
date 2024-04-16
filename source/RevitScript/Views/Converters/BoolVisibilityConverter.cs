@@ -3,7 +3,7 @@ using System.Windows.Data;
 using System.Windows.Markup;
 using Visibility = System.Windows.Visibility;
 
-namespace pyRevit.Views.Converters;
+namespace RevitScript.Views.Converters;
 
 public class BoolVisibilityConverter : MarkupExtension, IValueConverter
 {

@@ -3,11 +3,11 @@ using System.Reflection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
-using pyRevit.Views;
-using pyRevit.ViewModels;
-using pyRevit.Config;
+using RevitScript.Config;
+using RevitScript.ViewModels;
+using RevitScript.Views;
 
-namespace pyRevit;
+namespace RevitScript;
 
 /// <summary>
 ///     Provides a host for the application's services and manages their lifetimes
@@ -30,8 +30,8 @@ public static class Host
         builder.Logging.ClearProviders();
         builder.Logging.AddSerilogConfiguration();
 
-        builder.Services.AddTransient<pyRevitViewModel>();
-        builder.Services.AddTransient<pyRevitView>();
+        builder.Services.AddTransient<RevitScriptViewModel>();
+        builder.Services.AddTransient<RevitScriptView>();
 
         _host = builder.Build();
         _host.Start();

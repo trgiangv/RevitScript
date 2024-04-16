@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using Visibility = System.Windows.Visibility;
 
-namespace pyRevit.Utils;
+namespace RevitScript.Utils;
 
 /// <summary>
 ///     Controller for modeless windows
