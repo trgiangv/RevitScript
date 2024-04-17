@@ -30,7 +30,7 @@ public class StartupCommand : ExternalCommand
             var executor = new ScriptExecutor(UiApplication);
             var result = executor.ExecuteScript(startupScript);
             if (result == Result.Failed) {
-                TaskDialog.Show("Error Loading pyRevit", executor.Message);
+                TaskDialog.Show("Error Loading RevitScript", executor.Message);
             }
         }
     }

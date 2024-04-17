@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using Autodesk.Revit.UI;
+using RevitScript.Commands;
 
 namespace RevitScript;
 
@@ -11,8 +13,13 @@ namespace RevitScript;
 public class Application : IExternalApplication
 {
     private static string LoaderPath => Path.GetDirectoryName(typeof(Application).Assembly.Location);
+    private UIControlledApplication _uiControlledApplication;
+
     public Result OnStartup(UIControlledApplication application)
     {
+        // create a new button
+        _uiControlledApplication = application;
+        CreateRibbon();
         Host.Start();
         try {
             foreach (var engineDll in Directory.GetFiles(LoaderPath, "*.dll"))
@@ -31,6 +38,15 @@ public class Application : IExternalApplication
         return Result.Succeeded;
     }
 
+    private void CreateRibbon()
+    {
+        var panel = _uiControlledApplication.CreatePanel("Commands", "RevitScript");
+
+        panel.AddPushButton<StartupCommand>("Execute")
+            .SetImage("/RevitScript;component/Resources/Icons/RibbonIcon16.png")
+            .SetLargeImage("/RevitScript;component/Resources/Icons/RibbonIcon32.png");
+    }
+
 
     private static Result ExecuteStartupScript(UIControlledApplication uiControlledApplication) {
         // we need a UIApplication object to assign as `__revit__` in python...
@@ -43,11 +59,13 @@ public class Application : IExternalApplication
         // execute StartupScript
         Result result = Result.Succeeded;
         var startupScript = GetStartupScriptPath();
-        if (startupScript != null) {
+        if (startupScript != null)
+        {
             var executor = new ScriptExecutor(uiApplication);
             result = executor.ExecuteScript(startupScript);
-            if (result == Result.Failed) {
-                TaskDialog.Show("Error Loading pyRevit", executor.Message);
+            if (result == Result.Failed)
+            {
+                Debug.WriteLine($"Error Loading start up script {executor.Message}");
             }
         }
 

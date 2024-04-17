@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -128,15 +129,10 @@ namespace RevitScript {
         public void AddEmbeddedLib(ScriptEngine engine) {
             // use embedded python lib
             var asm = GetType().Assembly;
-            string resName = $"python_{EngineVersion}_lib.zip";
-
-            var resQuery = from name in asm.GetManifestResourceNames()
-                where name.ToLowerInvariant().EndsWith(resName)
-                select name;
-
-            var importer = new IronPython.Modules.ResourceMetaPathImporter(asm, resQuery.Single());
+            var pythonStdLibFolder = Path.Combine(asm.Location, "lib");
             dynamic sys = IronPython.Hosting.Python.GetSysModule(engine);
-            sys.meta_path.append(importer);
+            
+            sys.path.append(pythonStdLibFolder);
         }
 
         [PublicAPI]
@@ -156,7 +152,7 @@ namespace RevitScript {
             builtin.SetVariable("__revit__", uiApplication);
 
             // add the search paths
-            AddEmbeddedLib(engine);
+            //AddEmbeddedLib(engine);
 
             // reference RevitAPI and RevitAPIUI
             engine.Runtime.LoadAssembly(typeof(Document).Assembly);
