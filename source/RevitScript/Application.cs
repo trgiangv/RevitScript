@@ -20,7 +20,7 @@ public class Application : IExternalApplication
         // create a new button
         _uiControlledApplication = application;
         CreateRibbon();
-        Host.Start();
+
         try {
             foreach (var engineDll in Directory.GetFiles(LoaderPath, "*.dll"))
                 Assembly.LoadFrom(engineDll);
@@ -42,7 +42,11 @@ public class Application : IExternalApplication
     {
         var panel = _uiControlledApplication.CreatePanel("Commands", "RevitScript");
 
-        panel.AddPushButton<StartupCommand>("Execute")
+        panel.AddPushButton<IronPythonCmd>("Execute")
+            .SetImage("/RevitScript;component/Resources/Icons/RibbonIcon16.png")
+            .SetLargeImage("/RevitScript;component/Resources/Icons/RibbonIcon32.png");
+
+        panel.AddPushButton<CPythonCmd>("Execute2")
             .SetImage("/RevitScript;component/Resources/Icons/RibbonIcon16.png")
             .SetLargeImage("/RevitScript;component/Resources/Icons/RibbonIcon32.png");
     }

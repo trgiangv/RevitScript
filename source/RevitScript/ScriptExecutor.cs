@@ -129,10 +129,16 @@ namespace RevitScript {
         public void AddEmbeddedLib(ScriptEngine engine) {
             // use embedded python lib
             var asm = GetType().Assembly;
-            var pythonStdLibFolder = Path.Combine(asm.Location, "lib");
+
+            string resName = "ironpython.stdlib.3.4.1.zip";
+    
+            var resQuery = from name in asm.GetManifestResourceNames()
+                where name.ToLowerInvariant().EndsWith(resName)
+                select name;
+
+            var importer = new IronPython.Modules.ResourceMetaPathImporter(asm, resQuery.Single());
             dynamic sys = IronPython.Hosting.Python.GetSysModule(engine);
-            
-            sys.path.append(pythonStdLibFolder);
+            sys.meta_path.append(importer);
         }
 
         [PublicAPI]
@@ -152,7 +158,7 @@ namespace RevitScript {
             builtin.SetVariable("__revit__", uiApplication);
 
             // add the search paths
-            //AddEmbeddedLib(engine);
+            AddEmbeddedLib(engine);
 
             // reference RevitAPI and RevitAPIUI
             engine.Runtime.LoadAssembly(typeof(Document).Assembly);
