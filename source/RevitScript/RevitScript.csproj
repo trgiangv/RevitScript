@@ -68,6 +68,12 @@
     <ItemGroup>
         <Resource Include="Resources\Icons\RibbonIcon16.png" />
         <Resource Include="Resources\Icons\RibbonIcon32.png" />
+        <None Remove="Resources\Icons\CPython32.png" />
+        <Resource Include="Resources\Icons\CPython32.png" />
+        <None Remove="Resources\Icons\IronPython32.png" />
+        <Resource Include="Resources\Icons\IronPython32.png" />
+        <None Remove="Resources\Icons\Reload32.png" />
+        <Resource Include="Resources\Icons\Reload32.png" />
     </ItemGroup>
     
     <ItemGroup>

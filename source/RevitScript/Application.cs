@@ -42,12 +42,13 @@ public class Application : IExternalApplication
     {
         var panel = _uiControlledApplication.CreatePanel("Commands", "RevitScript");
 
-        panel.AddPushButton<IronPythonCmd>("Execute")
-            .SetImage("/RevitScript;component/Resources/Icons/RibbonIcon16.png")
+        panel.AddPushButton<IronPythonCmd>("IronPython")
             .SetLargeImage("/RevitScript;component/Resources/Icons/RibbonIcon32.png");
 
-        panel.AddPushButton<CPythonCmd>("Execute2")
-            .SetImage("/RevitScript;component/Resources/Icons/RibbonIcon16.png")
+        panel.AddPushButton<CPythonCmd>("CPython")
+            .SetLargeImage("/RevitScript;component/Resources/Icons/RibbonIcon32.png");
+        
+        panel.AddPushButton<HotLoaderCmd>("HotReload")
             .SetLargeImage("/RevitScript;component/Resources/Icons/RibbonIcon32.png");
     }
 
