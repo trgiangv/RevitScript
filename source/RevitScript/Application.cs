@@ -1,8 +1,11 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI;
+using Nice3point.Revit.Toolkit.External;
 using RevitScript.Commands;
+using RevitScript.Core;
 
 namespace RevitScript;
 
@@ -10,46 +13,51 @@ namespace RevitScript;
 ///     Application entry point
 /// </summary>
 [UsedImplicitly]
-public class Application : IExternalApplication
+public class Application : ExternalApplication
 {
     private static string LoaderPath => Path.GetDirectoryName(typeof(Application).Assembly.Location);
     private UIControlledApplication _uiControlledApplication;
 
-    public Result OnStartup(UIControlledApplication application)
+    public override void OnStartup()
     {
         // create a new button
-        _uiControlledApplication = application;
+        _uiControlledApplication = Application;
         CreateRibbon();
 
         try {
             foreach (var engineDll in Directory.GetFiles(LoaderPath, "*.dll"))
                 Assembly.LoadFrom(engineDll);
     
-            return ExecuteStartupScript(application);
+            ExecuteStartupScript(Application);
         }
         catch (Exception ex) {
             TaskDialog.Show("Error Loading Startup Script", ex.ToString());
-            return Result.Failed;
         }
-    }
-
-    public Result OnShutdown(UIControlledApplication application)
-    {
-        return Result.Succeeded;
     }
 
     private void CreateRibbon()
     {
         var panel = _uiControlledApplication.CreatePanel("Commands", "RevitScript");
 
-        panel.AddPushButton<IronPythonCmd>("IronPython")
-            .SetLargeImage("/RevitScript;component/Resources/Icons/RibbonIcon32.png");
-
-        panel.AddPushButton<CPythonCmd>("CPython")
-            .SetLargeImage("/RevitScript;component/Resources/Icons/RibbonIcon32.png");
+        // panel.AddPushButton<IronPythonCmd>("IronPython")
+        //     .SetLargeImage("/RevitScript;component/Resources/Icons/RibbonIcon32.png");
+        //
+        // panel.AddPushButton<CPythonCmd>("CPython")
+        //     .SetLargeImage("/RevitScript;component/Resources/Icons/RibbonIcon32.png");
+        //
+        // panel.AddPushButton<HotLoaderCmd>("HotReload")
+        //     .SetLargeImage("/RevitScript;component/Resources/Icons/RibbonIcon32.png");
         
-        panel.AddPushButton<HotLoaderCmd>("HotReload")
-            .SetLargeImage("/RevitScript;component/Resources/Icons/RibbonIcon32.png");
+        // Create two push buttons
+        PushButtonData button1 = new PushButtonData("IronPython", 
+            "IronPython", 
+            Assembly.GetExecutingAssembly().Location, 
+            typeof(IronPythonCmd).FullName)
+            {
+                LargeImage = new BitmapImage(new Uri("pack://application:,,,/RevitScript;component/Resources/Icons/RibbonIcon32.png"))
+            };
+        panel.AddItem(button1);
+
     }
 
 

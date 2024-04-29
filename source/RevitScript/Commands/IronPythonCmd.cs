@@ -2,6 +2,7 @@
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.UI;
 using Nice3point.Revit.Toolkit.External;
+using RevitScript.Core;
 
 namespace RevitScript.Commands;
 
@@ -15,7 +16,7 @@ public class IronPythonCmd : ExternalCommand
     public override void Execute()
     {
         // load IronPython script
-        var opts = new Dictionary<string, object>() {{"Frames", true}, {"FullFrames", true}, {"LightweightScopes", true}};
+        var opts = new Dictionary<string, object> {{"Frames", true}, {"FullFrames", true}, {"LightweightScopes", true}};
         var engine = IronPython.Hosting.Python.CreateEngine(opts);
 
         engine.Runtime.LoadAssembly(typeof(TaskDialog).Assembly);

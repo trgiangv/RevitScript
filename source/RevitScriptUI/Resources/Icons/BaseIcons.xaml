@@ -1,0 +1,104 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- #region  DCMvn Logo  -->
+    <Geometry x:Key="DcmvnLogoGeometry1">F1 M181,49z M0,0z M23.4109,27.9541L10.2446,28.5984 11.3541,49.0001 30.6968,48.0337C30.6968,48.0337 46.452,48.1769 50.6312,32.285 50.7052,32.2134 44.9726,28.312 36.9841,30.1017 36.6512,31.1038 36.0964,37.2602 28.0339,38.2624L23.9287,38.4771 23.4109,27.9541z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry2">F1 M181,49z M0,0z M37.2429,27.2735C37.2429,27.2735 44.4918,25.2334 50.927,29.8148 50.927,29.8148 52.7393,18.0749 45.6383,11.1669 44.5288,10.0931 39.1661,5.33271 27.3312,6.04856L22.1534,6.29911 22.7082,16.2136 26.6285,16.0347C26.6285,16.0347,37.206,15.8557,37.2429,27.2735z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry3">F1 M181,49z M0,0z M89.1686,15.4263L88.5398,3.68633C88.5398,3.68633 55.3651,-3.83011 54.8843,26.3788 54.8474,28.5622 56.2158,54.1896 90.6849,43.9529L90.0932,32.8931C90.0932,32.8931 72.008,41.9486 68.7903,25.6987 68.4575,24.5534 68.4945,8.1246 89.1686,15.4263z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry4">F1 M181,49z M0,0z M94.8271,44.8121L92.5711,2.75582 110.804,1.861 119.163,30.4235 123.934,1.21674 142.167,0.286133 144.423,42.3424 132.329,42.9509 130.628,10.7376 125.117,43.3088 113.319,43.8815 103.592,11.9545 105.294,44.311 94.8271,44.8121z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry5">F1 M181,49z M0,0z M2.78567,16.4094L-0.031311,20.5283 4.09515,23.1716 6.91212,19.0527 2.78567,16.4094z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry6">F1 M181,49z M0,0z M13.7497,12.8852L10.1775,18.1084 15.5715,21.5636 19.1437,16.3404 13.7497,12.8852z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry7">F1 M181,49z M0,0z M11.5399,-0.0168053L7.43695,5.98242 13.4508,9.83469 17.5538,3.83546 11.5399,-0.0168053z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry8">F1 M181,49z M0,0z M180.963,43.3087L181,43.4876 180.593,44.3825 173.603,44.7046 167.834,34.6111 168.093,33.251 173.899,43.6666 180.963,43.3087z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry9">F1 M181,49z M0,0z M166.391,42.6289L166.354,42.8437 165.8,43.9174 159.401,44.2396 159.956,42.8795 166.391,42.6289z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry10">F1 M181,49z M0,0z M174.491,27.238L175.009,26.5938 175.304,26.5938 175.637,37.2957 175.009,35.8998 174.491,27.238z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry11">F1 M181,49z M0,0z M16.7908,22.1916L20.2673,16.9301 19.1208,16.3574 15.5703,21.5473 16.7908,22.1916z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry12">F1 M181,49z M0,0z M5.25173,23.8382L7.98855,19.7578 6.953,19.042 4.14221,23.1581 5.25173,23.8382z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry13">F1 M181,49z M0,0z M18.529,4.43791L17.5305,3.86523 13.4252,9.84259 14.6457,10.5226 18.529,4.43791z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry14">F1 M181,49z M0,0z M147.788,42.8434L146.346,22.1553 145.606,22.37 145.606,22.2627 144.756,23.1575 146.235,44.8835 146.457,44.8478 156.628,44.3824 157.367,42.5212 147.788,42.8434z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry15">F1 M181,49z M0,0z M11.2801,18.8272L10.1706,18.1113 6.953,19.0777 7.32284,19.3999 7.13792,19.7578C7.13581,19.7932 7.14277,19.8285 7.15819,19.8606 7.17362,19.8928 7.19702,19.9207 7.22631,19.942 7.25561,19.9633 7.28989,19.9772 7.32609,19.9825 7.36229,19.9878 7.39929,19.9844 7.4338,19.9725L7.95157,19.8294 11.2801,18.8272z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry16">F1 M181,49z M0,0z M13.7581,12.9209L14.8306,13.6009 14.5348,9.95007C14.5348,9.95007,14.2389,9.27001,13.7581,10.0217L13.4992,9.91428 13.7581,12.9209z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry17">F1 M181,49z M0,0z M7.87762,19.8651L11.3541,18.8629 11.2802,18.8271 7.95159,19.7935 7.87762,19.8651z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry18">F1 M181,49z M0,0z M14.6457,10.5228L14.9416,13.6725 14.8306,13.5651 14.5717,10.4512 14.6457,10.5228z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry19">F1 M181,49z M0,0z M145.606,22.2629L147.16,43.7743 157.034,43.309 165.43,25.3053 158.181,24.9474 152.522,35.3988 151.783,21.2607 145.606,22.2629z</Geometry>
+    <Geometry x:Key="DcmvnLogoGeometry20">F1 M181,49z M0,0z M159.845,43.1661L166.354,42.844 168.13,33.3232 173.862,43.8462 181,43.4883 180.075,26.3436 175.009,26.5942 175.563,37.153 171.162,26.7732 165.43,25.3057 159.845,43.1661z</Geometry>
+    <DrawingGroup x:Key="DcmvnLogoDrawingGroup" ClipGeometry="M0,0 V49 H181 V0 H0 Z">
+        <DrawingGroup.Transform>
+            <TranslateTransform X="0.031311001628637314" Y="0.016805300489068031" />
+        </DrawingGroup.Transform>
+        <DrawingGroup Opacity="1">
+            <DrawingGroup.ClipGeometry>
+                <RectangleGeometry
+                    RadiusX="0"
+                    RadiusY="0"
+                    Rect="0,0,181,49" />
+            </DrawingGroup.ClipGeometry>
+            <GeometryDrawing Brush="#FFF27325" Geometry="{StaticResource DcmvnLogoGeometry1}" />
+            <GeometryDrawing Brush="#FFF27325" Geometry="{StaticResource DcmvnLogoGeometry2}" />
+            <GeometryDrawing Brush="#FF1072BA" Geometry="{StaticResource DcmvnLogoGeometry3}" />
+            <GeometryDrawing Brush="#FF1072BA" Geometry="{StaticResource DcmvnLogoGeometry4}" />
+            <GeometryDrawing Brush="#FF1072BA" Geometry="{StaticResource DcmvnLogoGeometry5}" />
+            <GeometryDrawing Brush="#FF1072BA" Geometry="{StaticResource DcmvnLogoGeometry6}" />
+            <GeometryDrawing Brush="#FF1072BA" Geometry="{StaticResource DcmvnLogoGeometry7}" />
+            <GeometryDrawing Brush="#FFA84424" Geometry="{StaticResource DcmvnLogoGeometry8}" />
+            <GeometryDrawing Brush="#FFA84424" Geometry="{StaticResource DcmvnLogoGeometry9}" />
+            <GeometryDrawing Brush="#FFA84424" Geometry="{StaticResource DcmvnLogoGeometry10}" />
+            <GeometryDrawing Brush="#FF005582" Geometry="{StaticResource DcmvnLogoGeometry11}" />
+            <GeometryDrawing Brush="#FF005582" Geometry="{StaticResource DcmvnLogoGeometry12}" />
+            <GeometryDrawing Brush="#FF005582" Geometry="{StaticResource DcmvnLogoGeometry13}" />
+            <GeometryDrawing Brush="#FFA84424" Geometry="{StaticResource DcmvnLogoGeometry14}" />
+            <GeometryDrawing Brush="#FF1072BA" Geometry="{StaticResource DcmvnLogoGeometry15}" />
+            <GeometryDrawing Brush="#FF1072BA" Geometry="{StaticResource DcmvnLogoGeometry16}" />
+            <GeometryDrawing Brush="#FF005582" Geometry="{StaticResource DcmvnLogoGeometry17}" />
+            <GeometryDrawing Brush="#FF005582" Geometry="{StaticResource DcmvnLogoGeometry18}" />
+            <GeometryDrawing Brush="#FFF27325" Geometry="{StaticResource DcmvnLogoGeometry19}" />
+            <GeometryDrawing Brush="#FFF27325" Geometry="{StaticResource DcmvnLogoGeometry20}" />
+        </DrawingGroup>
+    </DrawingGroup>
+    <DrawingImage x:Key="DcmvnLogo" Drawing="{StaticResource DcmvnLogoDrawingGroup}" />
+    <!-- #endregion -->
+    
+    
+    <DrawingImage x:Key="CheckIcon">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+                <GeometryDrawing Brush="#FFF27325" Geometry="F0 M24,24z M0,0z M12,22C7.28595,22 4.92893,22 3.46447,20.5355 2,19.0711 2,16.714 2,12 2,7.28595 2,4.92893 3.46447,3.46447 4.92893,2 7.28595,2 12,2 16.714,2 19.0711,2 20.5355,3.46447 22,4.92893 22,7.28595 22,12 22,16.714 22,19.0711 20.5355,20.5355 19.0711,22 16.714,22 12,22z M16.0303,8.96967C16.3232,9.26256,16.3232,9.73744,16.0303,10.0303L11.0303,15.0303C10.7374,15.3232,10.2626,15.3232,9.96967,15.0303L7.96967,13.0303C7.67678,12.7374 7.67678,12.2626 7.96967,11.9697 8.26256,11.6768 8.73744,11.6768 9.03033,11.9697L10.5,13.4393 14.9697,8.96967C15.2626,8.67678,15.7374,8.67678,16.0303,8.96967z" />
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    
+    <DrawingImage x:Key="CheckIcon2">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,-8 V64 H72 V0 H-8 Z">
+                <DrawingGroup.Transform>
+                    <TranslateTransform X="0" Y="8" />
+                </DrawingGroup.Transform>
+                <GeometryDrawing Brush="#FF1072BA" Geometry="F1 M72,72z M0,0z M53.37,30.15A0.84,0.84,0,0,0,53,30.06A1,1,0,0,0,52.28,30.37L50.28,32.37A1,1,0,0,0,50,33.06L50,41A5,5,0,0,1,45,46L19,46A5,5,0,0,1,14,41L14,15A5,5,0,0,1,19,10L45,10A5.78,5.78,0,0,1,46.4,10.18A0.85,0.85,0,0,0,46.68,10.25A1,1,0,0,0,47.4,9.93L48.93,8.41A1,1,0,0,0,49.21,7.5A1,1,0,0,0,48.65,6.78A8.6,8.6,0,0,0,45,6L19,6A8.66,8.66,0,0,0,12.65,8.64A8.66,8.66,0,0,0,10,15L10,41A8.66,8.66,0,0,0,12.64,47.35A8.66,8.66,0,0,0,19,50L45,50A9,9,0,0,0,54,41L54,31.06A0.91,0.91,0,0,0,53.37,30.15z" />
+                <GeometryDrawing Brush="#FFF27325" Geometry="F1 M72,72z M0,0z M61.21,12.23L57.78,8.8A2.49,2.49,0,0,0,54.22,8.8L34,29 25.79,20.79A2.49,2.49,0,0,0,22.23,20.79L18.79,24.22A2.49,2.49,0,0,0,18.79,27.78L32.24,41.2A2.49,2.49,0,0,0,35.8,41.2L61.21,15.79A2.49,2.49,0,0,0,61.21,12.23z" />
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    
+    <DrawingImage x:Key="FilterCustom">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+                <GeometryDrawing Geometry="F1 M24,24z M0,0z M21,6L19,6 M21,12L16,12 M21,18L16,18 M7,20L7,13.5612C7,13.3532 7,13.2492 6.97958,13.1497 6.96147,13.0615 6.93151,12.9761 6.89052,12.8958 6.84431,12.8054 6.77934,12.7242 6.64939,12.5617L3.35061,8.43826C3.22066,8.27583 3.15569,8.19461 3.10948,8.10417 3.06849,8.02393 3.03853,7.93852 3.02042,7.85026 3,7.75078 3,7.64677 3,7.43875L3,5.6C3,5.03995 3,4.75992 3.10899,4.54601 3.20487,4.35785 3.35785,4.20487 3.54601,4.10899 3.75992,4 4.03995,4 4.6,4L13.4,4C13.9601,4 14.2401,4 14.454,4.10899 14.6422,4.20487 14.7951,4.35785 14.891,4.54601 15,4.75992 15,5.03995 15,5.6L15,7.43875C15,7.64677 15,7.75078 14.9796,7.85026 14.9615,7.93852 14.9315,8.02393 14.8905,8.10417 14.8443,8.19461 14.7793,8.27583 14.6494,8.43826L11.3506,12.5617C11.2207,12.7242 11.1557,12.8054 11.1095,12.8958 11.0685,12.9761 11.0385,13.0615 11.0204,13.1497 11,13.2492 11,13.3532 11,13.5612L11,17 7,20z">
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
+                    </GeometryDrawing.Pen>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    
+    <DrawingImage x:Key="UncheckIcon">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V32 H32 V0 H0 Z">
+                <DrawingGroup Opacity="1">
+                    <DrawingGroup Opacity="1" Transform="1,0,0,1,-204,-1035">
+                        <GeometryDrawing Brush="#FF000000" Geometry="F0 M32,32z M0,0z M224.95,1046.05C224.559,1045.66,223.926,1045.66,223.536,1046.05L220,1049.59 216.464,1046.05C216.074,1045.66 215.441,1045.66 215.05,1046.05 214.66,1046.44 214.66,1047.07 215.05,1047.46L218.586,1051 215.05,1054.54C214.66,1054.93 214.66,1055.56 215.05,1055.95 215.441,1056.34 216.074,1056.34 216.464,1055.95L220,1052.41 223.536,1055.95C223.926,1056.34 224.559,1056.34 224.95,1055.95 225.34,1055.56 225.34,1054.93 224.95,1054.54L221.414,1051 224.95,1047.46C225.34,1047.07,225.34,1046.44,224.95,1046.05L224.95,1046.05z M234,1063C234,1064.1,233.104,1065,232,1065L208,1065C206.896,1065,206,1064.1,206,1063L206,1039C206,1037.9,206.896,1037,208,1037L232,1037C233.104,1037,234,1037.9,234,1039L234,1063 234,1063z M232,1035L208,1035C205.791,1035,204,1036.79,204,1039L204,1063C204,1065.21,205.791,1067,208,1067L232,1067C234.209,1067,236,1065.21,236,1063L236,1039C236,1036.79,234.209,1035,232,1035L232,1035z" />
+                    </DrawingGroup>
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+</ResourceDictionary>

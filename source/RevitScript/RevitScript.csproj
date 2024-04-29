@@ -42,27 +42,32 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="Models\**" />
-      <EmbeddedResource Remove="Models\**" />
-      <None Remove="Models\**" />
-      <Page Remove="Models\**" />
+      <EmbeddedResource Include="Resources\StdLib\IronPython.StdLib.3.4.1.zip" Condition="$(RevitVersion) != '2020'"/>
+      <EmbeddedResource Include="Resources\StdLib\IronPython.StdLib.2.7.12.zip" Condition="$(RevitVersion) == '2020'"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="IronPython" Version="3.4.1" />
+        
+        <!-- python packages-->
+        <PackageReference Include="IronPython" Version="2.7.12" Condition="$(RevitVersion) == '2020'" />
+        <PackageReference Include="IronPython" Version="3.4.1" Condition="$(RevitVersion) != '2020'"/>
+        <PackageReference Include="Python.Included" Version="3.11.6" />
+        <PackageReference Include="pythonnet" Version="3.0.3" />
+        
+        <!-- Revit packages-->
         <PackageReference Include="Nice3point.Revit.Build.Tasks" Version="1.*" />
         <PackageReference Include="Nice3point.Revit.Toolkit" Version="$(RevitVersion).*" />
         <PackageReference Include="Nice3point.Revit.Extensions" Version="$(RevitVersion).*" />
         <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).*" />
         <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitVersion).*" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.*" />
-        <PackageReference Include="Python.Included" Version="3.11.6" />
-        <PackageReference Include="pythonnet" Version="3.0.3" />
+        
+        <!-- Serilog packages-->
         <PackageReference Include="Serilog.Sinks.Debug" Version="2.*" />
         <PackageReference Include="Serilog.Extensions.Hosting" Version="7.*" Condition="$(RevitVersion) == '2025'" />
         <PackageReference Include="Serilog.Extensions.Hosting" Version="8.*" Condition="$(RevitVersion) != '' And $(RevitVersion) &lt; '2025'" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.*" Condition="$(RevitVersion) == '2025'" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.*" Condition="$(RevitVersion) != '' And $(RevitVersion) &lt; '2025'" />
+<!--        <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.*" Condition="$(RevitVersion) == '2025'" />-->
+<!--        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.*" Condition="$(RevitVersion) != '' And $(RevitVersion) &lt; '2025'" />-->
     </ItemGroup>
 
     <ItemGroup>
@@ -75,9 +80,9 @@
         <None Remove="Resources\Icons\Reload32.png" />
         <Resource Include="Resources\Icons\Reload32.png" />
     </ItemGroup>
-    
+
     <ItemGroup>
-        <EmbeddedResource Include="Resources\IronPython.StdLib.3.4.1.zip" />
+      <ProjectReference Include="..\RevitScriptUI\RevitScriptUI.csproj" />
     </ItemGroup>
 
 </Project>
