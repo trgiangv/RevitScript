@@ -4,8 +4,9 @@
         <Assembly>RevitScript/RevitScript.dll</Assembly>
         <AddInId>F215FF0F-6B8B-4B2E-B04C-82423A3EE925</AddInId>
         <FullClassName>RevitScript.Application</FullClassName>
+        <Publisher>GiangVu</Publisher>
         <VendorId>GiangVu</VendorId>
         <VendorDescription>GiangVu</VendorDescription>
-        <VendorEmail>GiangVu</VendorEmail>
+        <VendorEmail>truonggiangvu610@gmail.com</VendorEmail>
     </AddIn>
 </RevitAddIns>

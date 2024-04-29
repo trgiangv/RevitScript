@@ -52,5 +52,10 @@
         <ApplicationDefinition Remove="App.xaml"/>
         <Page Include="App.xaml" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <None Remove="Resources\Icons\DCMvn_Logo_155x155.png" />
+      <Resource Include="Resources\Icons\DCMvn_Logo_155x155.png" />
+    </ItemGroup>
 
 </Project>

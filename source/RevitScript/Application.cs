@@ -38,15 +38,6 @@ public class Application : ExternalApplication
     private void CreateRibbon()
     {
         var panel = _uiControlledApplication.CreatePanel("Commands", "RevitScript");
-
-        // panel.AddPushButton<IronPythonCmd>("IronPython")
-        //     .SetLargeImage("/RevitScript;component/Resources/Icons/RibbonIcon32.png");
-        //
-        // panel.AddPushButton<CPythonCmd>("CPython")
-        //     .SetLargeImage("/RevitScript;component/Resources/Icons/RibbonIcon32.png");
-        //
-        // panel.AddPushButton<HotLoaderCmd>("HotReload")
-        //     .SetLargeImage("/RevitScript;component/Resources/Icons/RibbonIcon32.png");
         
         // Create two push buttons
         PushButtonData button1 = new PushButtonData("IronPython", 
@@ -57,10 +48,17 @@ public class Application : ExternalApplication
                 LargeImage = new BitmapImage(new Uri("pack://application:,,,/RevitScript;component/Resources/Icons/RibbonIcon32.png"))
             };
         panel.AddItem(button1);
-
+        
+        PushButtonData button2 = new PushButtonData("HotLoader", 
+            "HotLoader", 
+            Assembly.GetExecutingAssembly().Location,
+            typeof(HotLoaderCmd).FullName)
+        {
+            LargeImage = new BitmapImage(new Uri("pack://application:,,,/RevitScript;component/Resources/Icons/RibbonIcon32.png"))
+        };
+        panel.AddItem(button2);
     }
-
-
+    
     private static Result ExecuteStartupScript(UIControlledApplication uiControlledApplication) {
         // we need a UIApplication object to assign as `__revit__` in python...
         var fieldName = "m_uiapplication";

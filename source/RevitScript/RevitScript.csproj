@@ -51,8 +51,6 @@
         <!-- python packages-->
         <PackageReference Include="IronPython" Version="2.7.12" Condition="$(RevitVersion) == '2020'" />
         <PackageReference Include="IronPython" Version="3.4.1" Condition="$(RevitVersion) != '2020'"/>
-        <PackageReference Include="Python.Included" Version="3.11.6" />
-        <PackageReference Include="pythonnet" Version="3.0.3" />
         
         <!-- Revit packages-->
         <PackageReference Include="Nice3point.Revit.Build.Tasks" Version="1.*" />
