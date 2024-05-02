@@ -51,6 +51,7 @@
         <!-- python packages-->
         <PackageReference Include="IronPython" Version="2.7.12" Condition="$(RevitVersion) == '2020'" />
         <PackageReference Include="IronPython" Version="3.4.1" Condition="$(RevitVersion) != '2020'"/>
+        <PackageReference Include="MiniExcel" Version="1.31.3" />
         
         <!-- Revit packages-->
         <PackageReference Include="Nice3point.Revit.Build.Tasks" Version="1.*" />

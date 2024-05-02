@@ -40,23 +40,23 @@ public class Application : ExternalApplication
         var panel = _uiControlledApplication.CreatePanel("Commands", "RevitScript");
         
         // Create two push buttons
-        PushButtonData button1 = new PushButtonData("IronPython", 
+        PushButtonData ironPython = new PushButtonData("IronPython", 
             "IronPython", 
             Assembly.GetExecutingAssembly().Location, 
             typeof(IronPythonCmd).FullName)
             {
                 LargeImage = new BitmapImage(new Uri("pack://application:,,,/RevitScript;component/Resources/Icons/RibbonIcon32.png"))
             };
-        panel.AddItem(button1);
+        panel.AddItem(ironPython);
         
-        PushButtonData button2 = new PushButtonData("HotLoader", 
+        PushButtonData hotLoader = new PushButtonData("HotLoader", 
             "HotLoader", 
             Assembly.GetExecutingAssembly().Location,
             typeof(HotLoaderCmd).FullName)
         {
             LargeImage = new BitmapImage(new Uri("pack://application:,,,/RevitScript;component/Resources/Icons/RibbonIcon32.png"))
         };
-        panel.AddItem(button2);
+        panel.AddItem(hotLoader);
     }
     
     private static Result ExecuteStartupScript(UIControlledApplication uiControlledApplication) {
@@ -70,14 +70,12 @@ public class Application : ExternalApplication
         // execute StartupScript
         Result result = Result.Succeeded;
         var startupScript = GetStartupScriptPath();
-        if (startupScript != null)
+        if (startupScript == null) return result;
+        var executor = new ScriptExecutor(uiApplication);
+        result = executor.ExecuteScript(startupScript);
+        if (result == Result.Failed)
         {
-            var executor = new ScriptExecutor(uiApplication);
-            result = executor.ExecuteScript(startupScript);
-            if (result == Result.Failed)
-            {
-                Debug.WriteLine($"Error Loading start up script {executor.Message}");
-            }
+            Debug.WriteLine($"Error Loading start up script {executor.Message}");
         }
 
         return result;
