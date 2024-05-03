@@ -15,7 +15,7 @@ namespace RevitPythonShell.Views
         private TextBox _lblDocumentation;
         private CompletionToolTipWindow _dialog;
         private bool _cancel = false;
-        IEnumerable<string> _documentations;
+        private IEnumerable<string> _documentations;
 
         private class CompletionToolTipWindow: Form
         {
@@ -112,7 +112,8 @@ namespace RevitPythonShell.Views
 
             return (string)_lstCompletions.SelectedItem;
         }
-        void selectedIndexChanged(object sender, EventArgs e)
+
+        private void selectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
@@ -125,7 +126,7 @@ namespace RevitPythonShell.Views
             _dialog.resize();
         }
 
-        void dialog_KeyDown(object sender, KeyEventArgs e)
+        private void dialog_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab || e.KeyCode == Keys.Return)
             {
@@ -137,7 +138,8 @@ namespace RevitPythonShell.Views
                 _dialog.Hide();
             }
         }
-        void lstCompletionsClicked(object sender, EventArgs e)
+
+        private void lstCompletionsClicked(object sender, EventArgs e)
         {
             _dialog.Hide();
         }

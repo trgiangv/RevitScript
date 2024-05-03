@@ -13,10 +13,9 @@ namespace RevitPythonShell
 {
     [Regeneration(RegenerationOption.Manual)]
     [Transaction(TransactionMode.Manual)]
-    class App : IExternalApplication
+    internal class App : IExternalApplication
     {
         private const string AppName = "RevitPythonShell";
-        private static string _versionNumber;
         private static string _dllFolder;
 
         /// <summary>
@@ -27,8 +26,6 @@ namespace RevitPythonShell
 
             try
             {
-                _versionNumber = application.ControlledApplication.VersionNumber;
-
                 _dllFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 
                 var assemblyName = "CommandLoaderAssembly";
@@ -59,7 +56,7 @@ namespace RevitPythonShell
             var applicationVersionNumber = uiControlledApplication.ControlledApplication.VersionNumber;
             var fieldName = int.Parse(applicationVersionNumber) >= 2017 ? "m_uiapplication": "m_application";
             var fi = uiControlledApplication.GetType().GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance);
-            var uiApplication = (Autodesk.Revit.UI.UIApplication)fi?.GetValue(uiControlledApplication);  
+            var uiApplication = (UIApplication)fi?.GetValue(uiControlledApplication);  
             
             // execute StartupScript
             var startupScript = GetStartupScript();
@@ -72,7 +69,7 @@ namespace RevitPythonShell
             }
         }
 
-        private static void BuildRibbonPanel(UIControlledApplication application, string dllfullpath)
+        private static void BuildRibbonPanel(UIControlledApplication application, string dllFullPath)
         {
             var assembly = typeof(App).Assembly;
             var smallImage = GetEmbeddedPng(assembly, "RevitPythonShell.Resources.Python-16.png");
@@ -131,27 +128,19 @@ namespace RevitPythonShell
             splitButton?.AddPushButton(pbdDeployRpsAddin);
 
             var commands = GetCommands(GetSettings()).ToList();
-            AddGroupedCommands(dllfullpath, ribbonPanel, commands.Where(c => !string.IsNullOrEmpty(c.Group)).GroupBy(c => c.Group));
-            AddUngroupedCommands(dllfullpath, ribbonPanel, commands.Where(c => string.IsNullOrEmpty(c.Group)).ToList());
+            AddGroupedCommands(dllFullPath, ribbonPanel, commands.Where(c => !string.IsNullOrEmpty(c.Group)).GroupBy(c => c.Group));
+            AddUngroupedCommands(dllFullPath, ribbonPanel, commands.Where(c => string.IsNullOrEmpty(c.Group)).ToList());
         }
 
 
-
-        private static ImageSource GetEmbeddedBmp(System.Reflection.Assembly app, string imageName)
+        private static ImageSource GetEmbeddedPng(Assembly app, string imageName)
         {
             var file = app.GetManifestResourceStream(imageName);
-            var source = BitmapDecoder.Create(file!, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+            var source = BitmapDecoder.Create(file!, BitmapCreateOptions.None, BitmapCacheOption.None);
             return source.Frames[0];
         }
 
-        private static ImageSource GetEmbeddedPng(System.Reflection.Assembly app, string imageName)
-        {
-            var file = app.GetManifestResourceStream(imageName);
-            var source = BitmapDecoder.Create(file, BitmapCreateOptions.None, BitmapCacheOption.None);
-            return source.Frames[0];
-        }
-
-        private static void AddGroupedCommands(string dllfullpath, RibbonPanel ribbonPanel, IEnumerable<IGrouping<string, Command>> groupedCommands)
+        private static void AddGroupedCommands(string dllFullPath, RibbonPanel ribbonPanel, IEnumerable<IGrouping<string, Command>> groupedCommands)
         {
             foreach (var group in groupedCommands)
             {
@@ -159,7 +148,7 @@ namespace RevitPythonShell
                 var splitButton = ribbonPanel.AddItem(splitButtonData) as SplitButton;
                 foreach (var command in group)
                 {
-                    var pbd = new PushButtonData(command.Name, command.Name, dllfullpath, "Command" + command.Index)
+                    var pbd = new PushButtonData(command.Name, command.Name, dllFullPath, "Command" + command.Index)
                         {
                             Image = command.SmallImage,
                             LargeImage = command.LargeImage

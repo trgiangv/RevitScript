@@ -10,7 +10,7 @@ namespace RevitPythonShell.RevitCommands
     /// </summary>
     [Regeneration(RegenerationOption.Manual)]
     [Transaction(TransactionMode.Manual)]
-    class ConfigureCommand: IExternalCommand
+    internal class ConfigureCommand: IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
