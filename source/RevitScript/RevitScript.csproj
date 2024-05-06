@@ -78,7 +78,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RevitScriptUI\RevitScriptUI.csproj" />
+      <ProjectReference Include="..\RevitScript.UI\RevitScript.UI.csproj" />
     </ItemGroup>
 
 </Project>
