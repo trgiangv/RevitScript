@@ -15,10 +15,10 @@ namespace RevitScript.Runtime.Views
         {
             Browser.TitleChanged += (s, e) =>
             {
-                this.Title = $"{Browser.Title} - CefSharp: {CefSharp.Cef.CefSharpVersion}";
-                if (this.Parent is Window window)
+                Title = $"{Browser.Title} - CefSharp: {CefSharp.Cef.CefSharpVersion}";
+                if (Parent is Window window)
                 {
-                    window.Title = this.Title;
+                    window.Title = Title;
                 }
             };
             Browser.Address = address;
@@ -32,12 +32,12 @@ namespace RevitScript.Runtime.Views
         #region InitializeWindow
         private void InitializeWindow()
         {
-            this.MinHeight = 400;
-            this.MinWidth = 600;
-            this.SizeToContent = SizeToContent.WidthAndHeight;
-            this.ShowInTaskbar = true;
-            this.ResizeMode = ResizeMode.CanResizeWithGrip;
-            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            MinHeight = 400;
+            MinWidth = 600;
+            SizeToContent = SizeToContent.WidthAndHeight;
+            ShowInTaskbar = true;
+            ResizeMode = ResizeMode.CanResizeWithGrip;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             new System.Windows.Interop.WindowInteropHelper(this) { Owner = Autodesk.Windows.ComponentManager.ApplicationWindow };
         }
         #endregion

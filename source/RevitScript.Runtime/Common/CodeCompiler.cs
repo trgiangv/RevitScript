@@ -1,13 +1,15 @@
 ﻿using System.IO;
 using System.Reflection;
-using System.ServiceModel.Description;
 using System.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Emit;
 using CS = Microsoft.CodeAnalysis.CSharp;
-using VB = Microsoft.CodeAnalysis.VisualBasic;
+using MetadataReference = System.ServiceModel.Description.MetadataReference;
 
 
 namespace RevitScript.Runtime.Common {
-    public static class CodeCompiler {
+    public static class CodeCompiler
+    {
         #region CSharp Compilation
 
         private static readonly CS.LanguageVersion MaxCSharpLanguageVersion =
@@ -22,7 +24,8 @@ namespace RevitScript.Runtime.Common {
             IEnumerable<string> defines,
             bool debug,
             out List<string> messages
-            ) {
+        )
+        {
             CS.CSharpCompilation compilation =
                 CreateCSharpCompilation(
                     sourceFiles,
@@ -35,11 +38,12 @@ namespace RevitScript.Runtime.Common {
 
             // compile and write results
             EmitResult result;
-            if (debug) {
+            if (debug)
+            {
                 string pdbName = Path.Combine(
                     Path.GetDirectoryName(outputPath),
                     Path.GetFileNameWithoutExtension(outputPath) + ".pdb"
-                    );
+                );
                 result = compilation.Emit(outputPath, pdbName);
             }
             else
@@ -58,7 +62,8 @@ namespace RevitScript.Runtime.Common {
             IEnumerable<string> defines,
             bool debug,
             out List<string> messages
-            ) {
+        )
+        {
             var compilation = CreateCSharpCompilation(
                 sourceFiles,
                 assemblyName,
@@ -66,48 +71,48 @@ namespace RevitScript.Runtime.Common {
                 defines,
                 debug,
                 out messages
-                );
-            
+            );
+
             // compile and write results
             var emitOpts = new EmitOptions();
-            if (debug) {
-                using (var assmData = new MemoryStream())
-                using (var assmPdbData = new MemoryStream()) {
-                    var result =
-                        compilation.Emit(
-                            peStream: assmData,
-                            pdbStream: assmPdbData,
-                            options: emitOpts
-                            );
+            if (debug)
+            {
+                using var assmData = new MemoryStream();
+                using var assmPdbData = new MemoryStream();
+                var result =
+                    compilation.Emit(
+                        peStream: assmData,
+                        pdbStream: assmPdbData,
+                        options: emitOpts
+                    );
 
-                    foreach (var diag in result.Diagnostics)
-                        messages.Add(diag.ToString());
+                foreach (var diag in result.Diagnostics)
+                    messages.Add(diag.ToString());
 
-                    // load assembly from memory stream
-                    assmData.Seek(0, SeekOrigin.Begin);
-                    if (assmData.Length > 0)
-                        return Assembly.Load(
-                            assmData.ToArray(),
-                            assmPdbData.ToArray()
-                            );
-                }
+                // load assembly from memory stream
+                assmData.Seek(0, SeekOrigin.Begin);
+                if (assmData.Length > 0)
+                    return Assembly.Load(
+                        assmData.ToArray(),
+                        assmPdbData.ToArray()
+                    );
             }
-            else {
-                using (var assmData = new MemoryStream()) {
-                    var result =
-                        compilation.Emit(
-                            peStream: assmData,
-                            options: emitOpts
-                            );
+            else
+            {
+                using var assmData = new MemoryStream();
+                var result =
+                    compilation.Emit(
+                        peStream: assmData,
+                        options: emitOpts
+                    );
 
-                    foreach (var diag in result.Diagnostics)
-                        messages.Add(diag.ToString());
+                foreach (var diag in result.Diagnostics)
+                    messages.Add(diag.ToString());
 
-                    // load assembly from memory stream
-                    assmData.Seek(0, SeekOrigin.Begin);
-                    if (assmData.Length > 0)
-                        return Assembly.Load(assmData.ToArray());
-                }
+                // load assembly from memory stream
+                assmData.Seek(0, SeekOrigin.Begin);
+                if (assmData.Length > 0)
+                    return Assembly.Load(assmData.ToArray());
             }
 
             return null;
@@ -121,12 +126,13 @@ namespace RevitScript.Runtime.Common {
             IEnumerable<string> defines,
             bool debug,
             out List<string> messages
-            ) {
+        )
+        {
             // parse the source files
             var parseOpts =
                 CS.CSharpParseOptions.Default
-                .WithLanguageVersion(MaxCSharpLanguageVersion)
-                .WithPreprocessorSymbols(defines);
+                    .WithLanguageVersion(MaxCSharpLanguageVersion)
+                    .WithPreprocessorSymbols(defines);
 
             // and build syntax tree
             List<SyntaxTree> syntaxTrees = new List<SyntaxTree>();
@@ -137,8 +143,8 @@ namespace RevitScript.Runtime.Common {
                         options: parseOpts,
                         path: sourceFile,
                         encoding: Encoding.UTF8
-                        )
-                    );
+                    )
+                );
 
             // collect references
             var refs = new List<string>();
@@ -149,12 +155,13 @@ namespace RevitScript.Runtime.Common {
 
             messages = new List<string>();
             messages.Add($"Define: {string.Join(";", defines)}");
-            var mdataRefs = new List<MetadataReference>();
-            foreach (var refPath in refs) {
+            var mdataRefs = new List<PortableExecutableReference>();
+            foreach (var refPath in refs)
+            {
                 messages.Add($"Reference: {refPath}");
                 mdataRefs.Add(
                     AssemblyMetadata.CreateFromFile(refPath).GetReference()
-                    );
+                );
             }
 
             // compile options
@@ -170,175 +177,10 @@ namespace RevitScript.Runtime.Common {
                 syntaxTrees: syntaxTrees,
                 references: mdataRefs,
                 options: compileOpts
-                );
+            );
         }
 
         #endregion
 
-        #region Visual Basic Compilation
-
-        private static readonly VB.LanguageVersion MaxVBLanguageVersion =
-            Enum.GetValues(typeof(VB.LanguageVersion))
-                .Cast<VB.LanguageVersion>()
-                .Max();
-
-        public static bool CompileVisualBasic(
-            IEnumerable<string> sourceFiles,
-            string outputPath,
-            IEnumerable<string> references,
-            IEnumerable<KeyValuePair<string, object>> defines,
-            bool debug,
-            out List<string> messages
-        ) {
-            VB.VisualBasicCompilation compilation =
-                CreateVisualBasicCompilation(
-                    sourceFiles,
-                    Path.GetFileName(outputPath),
-                    references,
-                    defines,
-                    debug,
-                    out messages
-                );
-
-            // compile and write results
-            EmitResult result;
-            if (debug) {
-                string pdbName = Path.Combine(
-                    Path.GetDirectoryName(outputPath),
-                    Path.GetFileNameWithoutExtension(outputPath) + ".pdb"
-                    );
-                result = compilation.Emit(outputPath, pdbName);
-            }
-            else
-                result = compilation.Emit(outputPath);
-
-            foreach (var diag in result.Diagnostics)
-                messages.Add(diag.ToString());
-
-            return result.Success;
-        }
-
-        public static Assembly CompileVisualBasicToAssembly(
-            IEnumerable<string> sourceFiles,
-            string assemblyName,
-            IEnumerable<string> references,
-            IEnumerable<KeyValuePair<string, object>> defines,
-            bool debug,
-            out List<string> messages
-            ) {
-            var compilation = CreateVisualBasicCompilation(
-                sourceFiles,
-                assemblyName,
-                references,
-                defines,
-                debug,
-                out messages
-                );
-
-            // compile and write results
-            var emitOpts = new EmitOptions();
-            if (debug) {
-                using (var assmData = new MemoryStream())
-                using (var assmPdbData = new MemoryStream()) {
-                    var result =
-                        compilation.Emit(
-                            peStream: assmData,
-                            pdbStream: assmPdbData,
-                            options: emitOpts
-                            );
-
-                    foreach (var diag in result.Diagnostics)
-                        messages.Add(diag.ToString());
-
-                    // load assembly from memory stream
-                    assmData.Seek(0, SeekOrigin.Begin);
-                    if (assmData.Length > 0)
-                        return Assembly.Load(
-                            assmData.ToArray(),
-                            assmPdbData.ToArray()
-                            );
-                }
-            }
-            else {
-                using (var assmData = new MemoryStream()) {
-                    var result =
-                        compilation.Emit(
-                            peStream: assmData,
-                            options: emitOpts
-                            );
-
-                    foreach (var diag in result.Diagnostics)
-                        messages.Add(diag.ToString());
-
-                    // load assembly from memory stream
-                    assmData.Seek(0, SeekOrigin.Begin);
-                    if (assmData.Length > 0)
-                        return Assembly.Load(assmData.ToArray());
-                }
-            }
-
-            return null;
-        }
-
-        // TODO: implement resources https://stackoverflow.com/a/26853131/2350244
-        private static VB.VisualBasicCompilation CreateVisualBasicCompilation(
-            IEnumerable<string> sourceFiles,
-            string assemblyName,
-            IEnumerable<string> references,
-            IEnumerable<KeyValuePair<string, object>> defines,
-            bool debug,
-            out List<string> messages
-            ) {
-            // parse the source files
-            var parseOpts =
-                VB.VisualBasicParseOptions.Default
-                .WithLanguageVersion(MaxVBLanguageVersion)
-                .WithPreprocessorSymbols(defines);
-
-            // and build syntax tree
-            List<SyntaxTree> syntaxTrees = new List<SyntaxTree>();
-            foreach (var sourceFile in sourceFiles)
-                syntaxTrees.Add(
-                    VB.VisualBasicSyntaxTree.ParseText(
-                        text: File.ReadAllText(sourceFile),
-                        options: parseOpts,
-                        path: sourceFile,
-                        encoding: Encoding.UTF8
-                        )
-                    );
-
-            // collect references
-            var refs = new List<string>();
-            // add mscorelib
-            refs.Add(typeof(object).Assembly.Location);
-            foreach (var refFile in references)
-                refs.Add(refFile);
-
-            messages = new List<string>();
-            messages.Add($"Define: {string.Join(";", defines)}");
-            var mdataRefs = new List<MetadataReference>();
-            foreach (var refPath in refs) {
-                messages.Add($"Reference: {refPath}");
-                mdataRefs.Add(
-                    AssemblyMetadata.CreateFromFile(refPath).GetReference()
-                    );
-            }
-
-            // compile options
-            var compileOpts =
-                new VB.VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
-                    .WithOverflowChecks(true)
-                    .WithPlatform(Platform.X64)
-                    .WithOptimizationLevel(debug ? OptimizationLevel.Debug : OptimizationLevel.Release);
-
-            // create compilation job
-            return VB.VisualBasicCompilation.Create(
-                assemblyName: assemblyName,
-                syntaxTrees: syntaxTrees,
-                references: mdataRefs,
-                options: compileOpts
-                );
-        }
     }
-    #endregion
 }

@@ -72,7 +72,7 @@ namespace RevitScript.Runtime.Engine {
                 Engine.Runtime.LoadAssembly(typeof(ScriptExecutor).Assembly);
 
                 // reference RevitAPI and RevitAPIUI
-                Engine.Runtime.LoadAssembly(typeof(Autodesk.Revit.DB.Document).Assembly);
+                Engine.Runtime.LoadAssembly(typeof(Document).Assembly);
                 Engine.Runtime.LoadAssembly(typeof(Autodesk.Revit.UI.TaskDialog).Assembly);
 
                 // save the default stream for later resetting the streams

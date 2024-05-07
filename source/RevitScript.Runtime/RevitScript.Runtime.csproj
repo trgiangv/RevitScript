@@ -39,7 +39,9 @@
         <PackageReference Include="ControlzEx" Version="7.0.0-alpha0104" />
         <PackageReference Include="IronPython" Version="3.4.1" />
         <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
+        <PackageReference Include="LibGit2Sharp" Version="0.30.0" />
         <PackageReference Include="MahApps.Metro" Version="2.4.10" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.10.0-3.final" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="Nice3point.Revit.Build.Tasks" Version="1.*"/>
         <PackageReference Include="Nice3point.Revit.Toolkit" Version="$(RevitVersion).*"/>

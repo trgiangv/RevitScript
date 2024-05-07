@@ -194,59 +194,59 @@ namespace RevitScript.Runtime.Engine {
 
         // event handlers --------------------------------------------------------------------------------------------
 
-        public void UIApplication_ViewActivating(object sender, Autodesk.Revit.UI.Events.ViewActivatingEventArgs e) {
+        public void UIApplication_ViewActivating(object sender, ViewActivatingEventArgs e) {
             ExecuteEventHooks(EventType.UIApplication_ViewActivating, sender, e);
         }
 
-        public void UIApplication_ViewActivated(object sender, Autodesk.Revit.UI.Events.ViewActivatedEventArgs e) {
+        public void UIApplication_ViewActivated(object sender, ViewActivatedEventArgs e) {
             ExecuteEventHooks(EventType.UIApplication_ViewActivated, sender, e);
         }
 
 #if !(REVIT2013 || REVIT2014 || REVIT2015 || REVIT2016 || REVIT2017)
-        public void UIApplication_TransferringProjectStandards(object sender, Autodesk.Revit.UI.Events.TransferringProjectStandardsEventArgs e) {
+        public void UIApplication_TransferringProjectStandards(object sender, TransferringProjectStandardsEventArgs e) {
             ExecuteEventHooks(EventType.UIApplication_TransferringProjectStandards, sender, e);
         }
 
-        public void UIApplication_TransferredProjectStandards(object sender, Autodesk.Revit.UI.Events.TransferredProjectStandardsEventArgs e) {
+        public void UIApplication_TransferredProjectStandards(object sender, TransferredProjectStandardsEventArgs e) {
             ExecuteEventHooks(EventType.UIApplication_TransferredProjectStandards, sender, e);
         }
 #endif
 
-        public void UIApplication_Idling(object sender, Autodesk.Revit.UI.Events.IdlingEventArgs e) {
+        public void UIApplication_Idling(object sender, IdlingEventArgs e) {
             ExecuteEventHooks(EventType.UIApplication_Idling, sender, e);
         }
 
 #if !(REVIT2013 || REVIT2014 || REVIT2015 || REVIT2016 || REVIT2017 || REVIT2018)
-        public void UIApplication_FormulaEditing(object sender, Autodesk.Revit.UI.Events.FormulaEditingEventArgs e) {
+        public void UIApplication_FormulaEditing(object sender, FormulaEditingEventArgs e) {
             ExecuteEventHooks(EventType.UIApplication_FormulaEditing, sender, e);
         }
 #endif
 
 #if !(REVIT2013 || REVIT2014 || REVIT2015 || REVIT2016)
-        public void UIApplication_FabricationPartBrowserChanged(object sender, Autodesk.Revit.UI.Events.FabricationPartBrowserChangedEventArgs e) {
+        public void UIApplication_FabricationPartBrowserChanged(object sender, FabricationPartBrowserChangedEventArgs e) {
             ExecuteEventHooks(EventType.UIApplication_FabricationPartBrowserChanged, sender, e);
         }
 #endif
 
 #if !(REVIT2013 || REVIT2014)
-        public void UIApplication_DockableFrameVisibilityChanged(object sender, Autodesk.Revit.UI.Events.DockableFrameVisibilityChangedEventArgs e) {
+        public void UIApplication_DockableFrameVisibilityChanged(object sender, DockableFrameVisibilityChangedEventArgs e) {
             ExecuteEventHooks(EventType.UIApplication_DockableFrameVisibilityChanged, sender, e);
         }
 
-        public void UIApplication_DockableFrameFocusChanged(object sender, Autodesk.Revit.UI.Events.DockableFrameFocusChangedEventArgs e) {
+        public void UIApplication_DockableFrameFocusChanged(object sender, DockableFrameFocusChangedEventArgs e) {
             ExecuteEventHooks(EventType.UIApplication_DockableFrameFocusChanged, sender, e);
         }
 #endif
 
-        public void UIApplication_DisplayingOptionsDialog(object sender, Autodesk.Revit.UI.Events.DisplayingOptionsDialogEventArgs e) {
+        public void UIApplication_DisplayingOptionsDialog(object sender, DisplayingOptionsDialogEventArgs e) {
             ExecuteEventHooks(EventType.UIApplication_DisplayingOptionsDialog, sender, e);
         }
 
-        public void UIApplication_DialogBoxShowing(object sender, Autodesk.Revit.UI.Events.DialogBoxShowingEventArgs e) {
+        public void UIApplication_DialogBoxShowing(object sender, DialogBoxShowingEventArgs e) {
             ExecuteEventHooks(EventType.UIApplication_DialogBoxShowing, sender, e);
         }
 
-        public void UIApplication_ApplicationClosing(object sender, Autodesk.Revit.UI.Events.ApplicationClosingEventArgs e) {
+        public void UIApplication_ApplicationClosing(object sender, ApplicationClosingEventArgs e) {
             ExecuteEventHooks(EventType.UIApplication_ApplicationClosing, sender, e);
         }
 

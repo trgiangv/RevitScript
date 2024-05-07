@@ -302,7 +302,7 @@ namespace RevitScript.Runtime.Engine {
         }
 
         // event handlers --------------------------------------------------------------------------------------------
-        public void UIApplication_ViewActivating(object sender, Autodesk.Revit.UI.Events.ViewActivatingEventArgs e) {
+        public void UIApplication_ViewActivating(object sender, ViewActivatingEventArgs e) {
             LogEventTelemetryRecord(new EventTelemetryRecord {
                 type = EventUtils.GetEventName(EventType.UIApplication_ViewActivating),
                 docname = e.Document != null ? e.Document.Title : "",
@@ -316,7 +316,7 @@ namespace RevitScript.Runtime.Engine {
             }, sender, e);
         }
 
-        public void UIApplication_ViewActivated(object sender, Autodesk.Revit.UI.Events.ViewActivatedEventArgs e) {
+        public void UIApplication_ViewActivated(object sender, ViewActivatedEventArgs e) {
             LogEventTelemetryRecord(new EventTelemetryRecord {
                 type = EventUtils.GetEventName(EventType.UIApplication_ViewActivated),
                 docname = e.Document != null ? e.Document.Title : "",
@@ -331,7 +331,7 @@ namespace RevitScript.Runtime.Engine {
         }
 
 #if !(REVIT2013 || REVIT2014 || REVIT2015 || REVIT2016 || REVIT2017)
-        public void UIApplication_TransferringProjectStandards(object sender, Autodesk.Revit.UI.Events.TransferringProjectStandardsEventArgs e) {
+        public void UIApplication_TransferringProjectStandards(object sender, TransferringProjectStandardsEventArgs e) {
             var extItems = new Dictionary<string, string>();
             foreach (var kvpair in e.GetExternalItems())
                 extItems.Add(kvpair.Key.ToString(), kvpair.Value);
@@ -359,7 +359,7 @@ namespace RevitScript.Runtime.Engine {
             }, sender, e);
         }
 
-        public void UIApplication_TransferredProjectStandards(object sender, Autodesk.Revit.UI.Events.TransferredProjectStandardsEventArgs e) {
+        public void UIApplication_TransferredProjectStandards(object sender, TransferredProjectStandardsEventArgs e) {
             var extItems = new Dictionary<string, string>();
             foreach (var kvpair in e.GetSelectedExternalItems())
                 extItems.Add(kvpair.Key.ToString(), kvpair.Value);
@@ -382,14 +382,14 @@ namespace RevitScript.Runtime.Engine {
         }
 #endif
 
-        public void UIApplication_Idling(object sender, Autodesk.Revit.UI.Events.IdlingEventArgs e) {
+        public void UIApplication_Idling(object sender, IdlingEventArgs e) {
             LogEventTelemetryRecord(new EventTelemetryRecord {
                 type = EventUtils.GetEventName(EventType.UIApplication_Idling),
             }, sender, e);
         }
 
 #if !(REVIT2013 || REVIT2014 || REVIT2015 || REVIT2016 || REVIT2017 || REVIT2018)
-        public void UIApplication_FormulaEditing(object sender, Autodesk.Revit.UI.Events.FormulaEditingEventArgs e) {
+        public void UIApplication_FormulaEditing(object sender, FormulaEditingEventArgs e) {
             var paramId = e.ParameterId;
 #if !(REVIT2017 || REVIT2018 || REVIT2019 || REVIT2020 || REVIT2021 || REVIT2022 || REVIT2023)
             long paramIdInt = 0;
@@ -423,7 +423,7 @@ namespace RevitScript.Runtime.Engine {
 #endif
 
 #if !(REVIT2013 || REVIT2014 || REVIT2015 || REVIT2016)
-            public void UIApplication_FabricationPartBrowserChanged(object sender, Autodesk.Revit.UI.Events.FabricationPartBrowserChangedEventArgs e) {
+            public void UIApplication_FabricationPartBrowserChanged(object sender, FabricationPartBrowserChangedEventArgs e) {
             // TODO: implement
             //e.GetAllSolutionsPartsTypeCounts
             //e.GetCurrentSolutionPartTypeIds
@@ -442,7 +442,7 @@ namespace RevitScript.Runtime.Engine {
 #endif
 
 #if !(REVIT2013 || REVIT2014)
-        public void UIApplication_DockableFrameVisibilityChanged(object sender, Autodesk.Revit.UI.Events.DockableFrameVisibilityChangedEventArgs e) {
+        public void UIApplication_DockableFrameVisibilityChanged(object sender, DockableFrameVisibilityChangedEventArgs e) {
             LogEventTelemetryRecord(new EventTelemetryRecord {
                 type = EventUtils.GetEventName(EventType.UIApplication_DockableFrameVisibilityChanged),
                 args = new Dictionary<string, object> {
@@ -452,7 +452,7 @@ namespace RevitScript.Runtime.Engine {
             }, sender, e);
         }
 
-        public void UIApplication_DockableFrameFocusChanged(object sender, Autodesk.Revit.UI.Events.DockableFrameFocusChangedEventArgs e) {
+        public void UIApplication_DockableFrameFocusChanged(object sender, DockableFrameFocusChangedEventArgs e) {
             LogEventTelemetryRecord(new EventTelemetryRecord {
                 type = EventUtils.GetEventName(EventType.UIApplication_DockableFrameFocusChanged),
                 args = new Dictionary<string, object> {
@@ -463,7 +463,7 @@ namespace RevitScript.Runtime.Engine {
         }
 #endif
 
-        public void UIApplication_DisplayingOptionsDialog(object sender, Autodesk.Revit.UI.Events.DisplayingOptionsDialogEventArgs e) {
+        public void UIApplication_DisplayingOptionsDialog(object sender, DisplayingOptionsDialogEventArgs e) {
             LogEventTelemetryRecord(new EventTelemetryRecord {
                 type = EventUtils.GetEventName(EventType.UIApplication_DisplayingOptionsDialog),
                 args = new Dictionary<string, object> {
@@ -472,7 +472,7 @@ namespace RevitScript.Runtime.Engine {
             }, sender, e);
         }
 
-        public void UIApplication_DialogBoxShowing(object sender, Autodesk.Revit.UI.Events.DialogBoxShowingEventArgs e) {
+        public void UIApplication_DialogBoxShowing(object sender, DialogBoxShowingEventArgs e) {
             LogEventTelemetryRecord(new EventTelemetryRecord {
                 type = EventUtils.GetEventName(EventType.UIApplication_DialogBoxShowing),
                 args = new Dictionary<string, object> {
@@ -485,7 +485,7 @@ namespace RevitScript.Runtime.Engine {
             }, sender, e);
         }
 
-        public void UIApplication_ApplicationClosing(object sender, Autodesk.Revit.UI.Events.ApplicationClosingEventArgs e) {
+        public void UIApplication_ApplicationClosing(object sender, ApplicationClosingEventArgs e) {
             LogEventTelemetryRecord(new EventTelemetryRecord {
                 type = EventUtils.GetEventName(EventType.UIApplication_ApplicationClosing),
             }, sender, e);

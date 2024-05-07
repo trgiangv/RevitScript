@@ -55,7 +55,7 @@ namespace RevitScript.Runtime.Engine {
                     Focusable = false,
                 };
 
-                BindingOperations.SetBinding(versionButton, Button.ContentProperty, myBinding);
+                BindingOperations.SetBinding(versionButton, ContentProperty, myBinding);
 
                 versionButton.Click += Copy_Button_Title;
                 windowButtons.Items.Add(versionButton);

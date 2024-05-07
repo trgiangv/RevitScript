@@ -17,13 +17,13 @@ namespace RevitScript.Runtime.Common {
         private static extern int StgIsStorageFile([MarshalAs(UnmanagedType.LPWStr)] string pwcsName);
 
         public static bool VerifyFile(string filePath) {
-            if (filePath != null && filePath != string.Empty)
-                return System.IO.File.Exists(filePath);
+            if (!string.IsNullOrEmpty(filePath))
+                return File.Exists(filePath);
             return false;
         }
 
         public static bool VerifyPath(string path) {
-            if (path != null && path != string.Empty)
+            if (!string.IsNullOrEmpty(path))
                 return Directory.Exists(path);
             return false;
         }
@@ -34,29 +34,29 @@ namespace RevitScript.Runtime.Common {
 
         // helper for deleting directories recursively
         // @handled @logs
-        public static void DeleteDirectory(string targetDir, bool verbose = true) {
-            if (CommonUtils.VerifyPath(targetDir)) {
-                if (verbose)
-                    logger.Debug("Recursive deleting directory \"{0}\"", targetDir);
-                string[] files = Directory.GetFiles(targetDir);
-                string[] dirs = Directory.GetDirectories(targetDir);
+        public static void DeleteDirectory(string targetDir, bool verbose = true)
+        {
+            if (!VerifyPath(targetDir)) return;
+            if (verbose)
+                logger.Debug("Recursive deleting directory \"{0}\"", targetDir);
+            string[] files = Directory.GetFiles(targetDir);
+            string[] dirs = Directory.GetDirectories(targetDir);
 
-                try {
-                    foreach (string file in files) {
-                        System.IO.File.SetAttributes(file, FileAttributes.Normal);
-                        System.IO.File.Delete(file);
-                    }
-
-                    foreach (string dir in dirs) {
-                        DeleteDirectory(dir, verbose: false);
-                    }
-
-                    Directory.Delete(targetDir, false);
+            try {
+                foreach (string file in files) {
+                    File.SetAttributes(file, FileAttributes.Normal);
+                    File.Delete(file);
                 }
-                catch (Exception ex) {
-                    throw new PyRevitException(string.Format("Error recursive deleting directory \"{0}\" | {1}",
-                                                             targetDir, ex.Message));
+
+                foreach (string dir in dirs) {
+                    DeleteDirectory(dir, verbose: false);
                 }
+
+                Directory.Delete(targetDir, false);
+            }
+            catch (Exception ex) {
+                throw new PyRevitException(string.Format("Error recursive deleting directory \"{0}\" | {1}",
+                    targetDir, ex.Message));
             }
         }
 
@@ -74,7 +74,7 @@ namespace RevitScript.Runtime.Common {
                 // copy all the files & Replaces any files with the same name
                 foreach (string newPath in Directory.GetFiles(sourceDir, "*.*",
                     SearchOption.AllDirectories))
-                    System.IO.File.Copy(newPath, newPath.Replace(sourceDir, destDir), true);
+                    File.Copy(newPath, newPath.Replace(sourceDir, destDir), true);
             }
             catch (Exception ex) {
                 throw new PyRevitException(
@@ -89,8 +89,8 @@ namespace RevitScript.Runtime.Common {
 
         public static void EnsureFile(string filePath) {
             EnsurePath(Path.GetDirectoryName(filePath));
-            if (!System.IO.File.Exists(filePath)) {
-                var file = System.IO.File.CreateText(filePath);
+            if (!File.Exists(filePath)) {
+                var file = File.CreateText(filePath);
                 file.Close();
             }
         }
@@ -110,7 +110,7 @@ namespace RevitScript.Runtime.Common {
         }
 
         public static string GetFileSignature(string filepath) {
-            return Math.Abs(System.IO.File.GetLastWriteTimeUtc(filepath).GetHashCode()).ToString();
+            return Math.Abs(File.GetLastWriteTimeUtc(filepath).GetHashCode()).ToString();
         }
 
         public static WebClient GetWebClient() {
@@ -135,25 +135,13 @@ namespace RevitScript.Runtime.Common {
         }
 
         public static string DownloadFile(string url, string destPath) {
-            try {
-                using (var client = GetWebClient()) {
-                    client.Headers.Add("User-Agent", "pyrevit-cli");
-                    //if (GlobalConfigs.ReportProgress) {
-                    //    logger.Debug("Downloading (async) \"{0}\"", url);
+            try
+            {
+                using var client = GetWebClient();
+                client.Headers.Add("User-Agent", "pyrevit-cli");
 
-                    //    client.DownloadProgressChanged += Client_DownloadProgressChanged;
-
-                    //    lastReport = 0;
-                    //    client.DownloadFileAsync(new Uri(url), destPath, progressToken);
-
-                    //    // wait until download is complete
-                    //    while (client.IsBusy) ;
-                    //}
-                    //else {
-                    logger.Debug("Downloading \"{0}\"", url);
-                    client.DownloadFile(url, destPath);
-                    //}
-                }
+                logger.Debug("Downloading \"{0}\"", url);
+                client.DownloadFile(url, destPath);
             }
             catch (Exception dlEx) {
                 logger.Debug("Error downloading file. | {0}", dlEx.Message);
@@ -162,37 +150,6 @@ namespace RevitScript.Runtime.Common {
 
             return destPath;
         }
-
-        //private static void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e) {
-        //    lock (ProgressLock) {
-        //        if (e.ProgressPercentage > lastReport) {
-        //            lastReport = e.ProgressPercentage;
-
-        //            // build progress bar and print
-        //            // =====>
-        //            var pbar = string.Concat(Enumerable.Repeat("=", (int)((lastReport / 100.0) * 50.0))) + ">";
-        //            // 4.57 KB/27.56 KB
-        //            var sizePbar = string.Format("{0}/{1}", e.BytesReceived.CleanupSize(), e.TotalBytesToReceive.CleanupSize());
-
-        //            // Downloading [==========================================>       ] 23.26 KB/27.56 KB
-        //            string message = "";
-        //            if (lastReport == 100) {
-        //                if (e.UserState != null)
-        //                    message = string.Format("\r{1}: Download complete ({0})", e.TotalBytesToReceive.CleanupSize(), (string)e.UserState);
-        //                else
-        //                    message = string.Format("\rDownload complete ({0})", e.TotalBytesToReceive.CleanupSize());
-        //                Console.WriteLine("{0,-120}", message);
-        //            }
-        //            else {
-        //                if (e.UserState != null)
-        //                    message = string.Format("\r{2}: Downloading [{0,-50}] {1}", pbar, sizePbar, (string)e.UserState);
-        //                else
-        //                    message = string.Format("\rDownloading [{0,-50}] {1}", pbar, sizePbar);
-        //                Console.Write("{0,-120}", message);
-        //            }
-        //        }
-        //    }
-        //}
 
         public static bool CheckInternetConnection() {
             try {
@@ -211,19 +168,14 @@ namespace RevitScript.Runtime.Common {
                                        streamName, filePath));
             int res = StgIsStorageFile(filePath);
 
-            if (res == 0) {
-                CompoundFile cf = new CompoundFile(filePath);
-                logger.Debug($"Found CF Root: {cf.RootStorage}");
-                if (cf.RootStorage.TryGetStream(streamName, out var foundStream)) {
-                    byte[] streamData = foundStream.GetData();
-                    cf.Close();
-                    return streamData;
-                }
-                return null;
-            }
-            else {
-                throw new NotSupportedException("File is not a structured storage file");
-            }
+            if (res != 0) throw new NotSupportedException("File is not a structured storage file");
+            CompoundFile cf = new CompoundFile(filePath);
+            logger.Debug($"Found CF Root: {cf.RootStorage}");
+            if (!cf.RootStorage.TryGetStream(streamName, out var foundStream)) return null;
+            byte[] streamData = foundStream.GetData();
+            cf.Close();
+            return streamData;
+
         }
 
         public static void OpenUrl(string url, string logErrMsg = null) {
@@ -233,24 +185,23 @@ namespace RevitScript.Runtime.Common {
                 logger.Debug("Opening {0}", url);
                 Process.Start(url);
             }
-            else {
-                if (logErrMsg is null)
-                    logErrMsg = string.Format("Error opening url \"{0}\"", url);
+            else
+            {
+                logErrMsg ??= $"Error opening url \"{url}\"";
 
-                logger.Error(string.Format("{0}. No internet connection detected.", logErrMsg));
+                logger.Error($"{logErrMsg}. No internet connection detected.");
             }
         }
 
         public static bool VerifyUrl(string url) {
-            if (CheckInternetConnection()) {
-                HttpWebRequest request = GetHttpWebRequest(url);
-                try {
-                    var response = request.GetResponse();
-                }
-                catch (Exception ex) {
-                    logger.Debug(ex);
-                    return false;
-                }
+            if (!CheckInternetConnection()) return true;
+            HttpWebRequest request = GetHttpWebRequest(url);
+            try {
+                var response = request.GetResponse();
+            }
+            catch (Exception ex) {
+                logger.Debug(ex);
+                return false;
             }
 
             return true;
@@ -259,35 +210,6 @@ namespace RevitScript.Runtime.Common {
         public static void OpenInExplorer(string resourcePath) {
             Process.Start("explorer.exe", resourcePath);
         }
-
-        // public static void AddShortcut(string shortCutName,
-        //                                string appName,
-        //                                string pathToExe,
-        //                                string args,
-        //                                string workingDir,
-        //                                string iconPath,
-        //                                string description,
-        //                                bool allUsers = false) {
-        //     string commonStartMenuPath = Environment.GetFolderPath(
-        //         allUsers ? Environment.SpecialFolder.CommonStartMenu : Environment.SpecialFolder.StartMenu
-        //         );
-        //     string appStartMenuPath = Path.Combine(commonStartMenuPath, "Programs", appName);
-
-        //     EnsurePath(appStartMenuPath);
-
-        //     string shortcutLocation = Path.Combine(appStartMenuPath, shortCutName + ".lnk");
-        //     WshShell shell = new WshShell();
-        //     IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutLocation);
-
-        //     shortcut.Description = "Test App Description";
-        //     //shortcut.IconLocation = @"C:\Program Files (x86)\TestApp\TestApp.ico"; //uncomment to set the icon of the shortcut
-        //     shortcut.TargetPath = pathToExe;
-        //     shortcut.Arguments = args;
-        //     shortcut.Description = description;
-        //     shortcut.IconLocation = iconPath;
-        //     shortcut.WorkingDirectory = workingDir;
-        //     shortcut.Save();
-        // }
 
         public static string NewShortUUID() {
             return Convert.ToBase64String(Guid.NewGuid().ToByteArray());
@@ -303,7 +225,7 @@ namespace RevitScript.Runtime.Common {
 
         public static Encoding GetUTF8NoBOMEncoding() {
             // https://coderwall.com/p/o59zug/encoding-multiply-files-to-utf8-without-bom-with-c
-            return new System.Text.UTF8Encoding(false);
+            return new UTF8Encoding(false);
         }
 
         public static int FindBytes(byte[] src, byte[] find) {
@@ -368,23 +290,21 @@ namespace RevitScript.Runtime.Common {
             return Name;
         }
 
-        public static string GetProcessFileName() => Process.GetCurrentProcess().MainModule.FileName;
+        public static string GetProcessFileName() => Process.GetCurrentProcess().MainModule?.FileName;
         public static string GetProcessPath() => Path.GetDirectoryName(GetProcessFileName());
         public static string GetAssemblyPath<T>() => Path.GetDirectoryName(typeof(T).Assembly.Location);
 
-        public static string GenerateSHA1Hash(string filePath) {
+        public static string GenerateSHA1Hash(string filePath)
+        {
             // Use input string to calculate SHA1 hash
-            using (FileStream fs = new FileStream(filePath, FileMode.Open)) {
-                using (BufferedStream bs = new BufferedStream(fs)) {
-                    using (var sha1 = new System.Security.Cryptography.SHA1Managed()) {
-                        StringBuilder sb = new StringBuilder();
-                        foreach (byte b in sha1.ComputeHash(bs)) {
-                            sb.Append(b.ToString("X2"));
-                        }
-                        return sb.ToString();
-                    }
-                }
+            using FileStream fs = new FileStream(filePath, FileMode.Open);
+            using BufferedStream bs = new BufferedStream(fs);
+            using var sha1 = new System.Security.Cryptography.SHA1Managed();
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in sha1.ComputeHash(bs)) {
+                sb.Append(b.ToString("X2"));
             }
+            return sb.ToString();
         }
     }
 }

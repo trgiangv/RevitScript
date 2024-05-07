@@ -11,6 +11,7 @@ using NLog;
 using UIFramework;
 using Xceed.Wpf.AvalonDock.Controls;
 using Xceed.Wpf.AvalonDock.Layout;
+using Control = System.Windows.Controls.Control;
 
 namespace RevitScript.Runtime.Engine {
     public enum EventType {
@@ -1099,29 +1100,29 @@ namespace RevitScript.Runtime.Engine {
                 Value = true
             };
             var triggerMouseOver = new Trigger {
-                Property = TabItem.IsMouseOverProperty,
+                Property = UIElement.IsMouseOverProperty,
                 Value = true
             };
 
             // apply background styling
             if (FillBackground) {
                 tabStyle.Setters.Add(
-                    new Setter { Property = TabItem.BackgroundProperty, Value = rule.Brush }
+                    new Setter { Property = Control.BackgroundProperty, Value = rule.Brush }
                 );
 
                 // highlighitng on triggers
                 var bgHightlightBrush = new SolidColorBrush(hslColor.Lighten(1.1).ToRgb());
                 triggerMouseOver.Setters.Add(
-                    new Setter { Property = TabItem.BackgroundProperty, Value = bgHightlightBrush }
+                    new Setter { Property = Control.BackgroundProperty, Value = bgHightlightBrush }
                 );
                 triggerSelected.Setters.Add(
-                    new Setter { Property = TabItem.BackgroundProperty, Value = bgHightlightBrush }
+                    new Setter { Property = Control.BackgroundProperty, Value = bgHightlightBrush }
                     );
 
                 // forground based on background
                 var forgeround = hslColor.Luminance > 127.0f ? DefaultForeground : LightForeground;
                 tabStyle.Setters.Add(
-                    new Setter { Property = TabItem.ForegroundProperty, Value = forgeround }
+                    new Setter { Property = Control.ForegroundProperty, Value = forgeround }
                 );
                 // setting forground on the "close" inner button
                 tabStyle.Resources["ClientAreaForegroundBrush"] = forgeround;
@@ -1129,10 +1130,10 @@ namespace RevitScript.Runtime.Engine {
 
             // apply border styling
             tabStyle.Setters.Add(
-                new Setter { Property = TabItem.BorderBrushProperty, Value = rule.Brush }
+                new Setter { Property = Control.BorderBrushProperty, Value = rule.Brush }
             );
             tabStyle.Setters.Add(
-                new Setter { Property = TabItem.BorderThicknessProperty, Value = BorderThickness }
+                new Setter { Property = Control.BorderThicknessProperty, Value = BorderThickness }
             );
 
             // highlighting borders on triggers
@@ -1140,22 +1141,22 @@ namespace RevitScript.Runtime.Engine {
             // selected tab hides the bottom border
             var selectedThickness = new Thickness(BorderThickness.Left, BorderThickness.Top, BorderThickness.Right, 0);
             triggerSelected.Setters.Add(
-                new Setter { Property = TabItem.BorderThicknessProperty, Value = FillBackground ? new Thickness(1,1,1,0) : selectedThickness }
+                new Setter { Property = Control.BorderThicknessProperty, Value = FillBackground ? new Thickness(1,1,1,0) : selectedThickness }
             );
 
             // apply border highlighting only when background is active, otherwise the difference is not visible
             if (FillBackground) {
                 triggerSelected.Setters.Add(
-                    new Setter { Property = TabItem.BorderBrushProperty, Value = Brushes.White }
+                    new Setter { Property = Control.BorderBrushProperty, Value = Brushes.White }
                 );
             } else {
                 triggerSelected.Setters.Add(
-                    new Setter { Property = TabItem.BorderBrushProperty, Value = borderHighlightBrush }
+                    new Setter { Property = Control.BorderBrushProperty, Value = borderHighlightBrush }
                 );
             }
 
             triggerMouseOver.Setters.Add(
-                new Setter { Property = TabItem.BorderBrushProperty, Value = borderHighlightBrush }
+                new Setter { Property = Control.BorderBrushProperty, Value = borderHighlightBrush }
             );
 
             // add triggers to style
@@ -1582,9 +1583,9 @@ namespace RevitScript.Runtime.Engine {
         // updating flow direction on tabs
         public static StackPanel PanelSet;
         public static string RibbonTabTag;
-        public static System.Windows.FlowDirection FlowDirection { get; set; }
+        public static FlowDirection FlowDirection { get; set; }
 
-        public static void StartUpdatingRibbon(StackPanel panelSet, System.Windows.FlowDirection flowDir, string tagTag) {
+        public static void StartUpdatingRibbon(StackPanel panelSet, FlowDirection flowDir, string tagTag) {
             PanelSet = panelSet;
             FlowDirection = flowDir;
             RibbonTabTag = tagTag;
@@ -1596,7 +1597,7 @@ namespace RevitScript.Runtime.Engine {
         }
 
         public static void StopUpdatingRibbon() {
-            FlowDirection = System.Windows.FlowDirection.LeftToRight;
+            FlowDirection = FlowDirection.LeftToRight;
 
             // reset the ui to default flow direction
             if (PanelSet != null && RibbonTabTag != null) {

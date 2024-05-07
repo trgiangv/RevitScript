@@ -148,7 +148,7 @@ namespace RevitScript.Runtime.Engine {
             foreach (Button item in RightWindowCommands.Items)
                 item.Visibility = isVisible;
 
-            this.TitleForeground = isVisible == Visibility.Visible ? Brushes.White : new SolidColorBrush() { Color = Color.FromArgb(0xFF, 0x2c, 0x3e, 0x50) };
+            TitleForeground = isVisible == Visibility.Visible ? Brushes.White : new SolidColorBrush() { Color = Color.FromArgb(0xFF, 0x2c, 0x3e, 0x50) };
         }
 
         public void ResetIcon() {
@@ -235,9 +235,9 @@ namespace RevitScript.Runtime.Engine {
             }
             _contentLoaded = true;
 
-            this.Loaded += Window_Loaded;
-            this.Closing += Window_Closing;
-            this.Closed += Window_Closed;
+            Loaded += Window_Loaded;
+            Closing += Window_Closing;
+            Closed += Window_Closed;
 
             host = new System.Windows.Forms.Integration.WindowsFormsHost();
             host.SnapsToDevicePixels = true;
@@ -286,7 +286,7 @@ namespace RevitScript.Runtime.Engine {
             baseGrid.Children.Add(activityBar);
             baseGrid.Children.Add(host);
             baseGrid.Children.Add(stdinBar);
-            this.Content = baseGrid;
+            Content = baseGrid;
 
             #endregion
 
@@ -335,15 +335,15 @@ namespace RevitScript.Runtime.Engine {
 
             #endregion
 
-            this.Width = 900; this.MinWidth = 700;
-            this.Height = 600; this.MinHeight = this.TitleBarHeight;
-            this.ResizeMode = ResizeMode.CanResize;
+            Width = 900; MinWidth = 700;
+            Height = 600; MinHeight = TitleBarHeight;
+            ResizeMode = ResizeMode.CanResize;
 
             // setup auto-collapse
-            this.Activated += ScriptOutput_GotFocus;
-            this.Deactivated += ScriptOutput_LostFocus;
+            Activated += ScriptOutput_GotFocus;
+            Deactivated += ScriptOutput_LostFocus;
 
-            this.OutputTitle = PyRevitLabsConsts.ProductName;
+            OutputTitle = PyRevitLabsConsts.ProductName;
         }
 
         [DebuggerNonUserCode()]
@@ -352,8 +352,8 @@ namespace RevitScript.Runtime.Engine {
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
-            this._contentLoaded = true;
+        void IComponentConnector.Connect(int connectionId, object target) {
+            _contentLoaded = true;
         }
 
         public System.Windows.Forms.HtmlDocument ActiveDocument => renderer.Document;
@@ -401,11 +401,11 @@ namespace RevitScript.Runtime.Engine {
         }
 
         public void LockSize() {
-            this.ResizeMode = ResizeMode.NoResize;
+            ResizeMode = ResizeMode.NoResize;
         }
 
         public void UnlockSize() {
-            this.ResizeMode = ResizeMode.CanResizeWithGrip;
+            ResizeMode = ResizeMode.CanResizeWithGrip;
         }
 
         public void Freeze() {
@@ -567,7 +567,7 @@ namespace RevitScript.Runtime.Engine {
                 var inputUrl = e.Url.ToString();
 
                 if (inputUrl.StartsWith("http") && !inputUrl.StartsWith("http://localhost")) {
-                    System.Diagnostics.Process.Start(inputUrl);
+                    Process.Start(inputUrl);
                 }
                 else if (inputUrl.StartsWith("revit")) {
                     e.Cancel = true;
@@ -600,9 +600,9 @@ namespace RevitScript.Runtime.Engine {
         }
 
         public void SetProgressBarVisibility(bool visibility) {
-            if (this.TaskbarItemInfo != null)
+            if (TaskbarItemInfo != null)
                 // taskbar progress object
-                this.TaskbarItemInfo.ProgressState = visibility ? System.Windows.Shell.TaskbarItemProgressState.Normal : System.Windows.Shell.TaskbarItemProgressState.None;
+                TaskbarItemInfo.ProgressState = visibility ? System.Windows.Shell.TaskbarItemProgressState.Normal : System.Windows.Shell.TaskbarItemProgressState.None;
 
             WaitReadyBrowser();
             if (ActiveDocument != null) {
@@ -626,27 +626,27 @@ namespace RevitScript.Runtime.Engine {
         }
 
         public void UpdateTaskBarProgress(float curValue, float maxValue) {
-            if (this.TaskbarItemInfo == null) {
+            if (TaskbarItemInfo == null) {
                 // taskbar progress object
                 var taskbarinfo = new System.Windows.Shell.TaskbarItemInfo();
                 taskbarinfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.Normal;
-                this.TaskbarItemInfo = taskbarinfo;
+                TaskbarItemInfo = taskbarinfo;
             }
 
-            this.TaskbarItemInfo.ProgressValue = curValue / maxValue;
+            TaskbarItemInfo.ProgressValue = curValue / maxValue;
         }
 
         public void UpdateTaskBarProgress(bool indeterminate) {
-            if (this.TaskbarItemInfo == null) {
+            if (TaskbarItemInfo == null) {
                 // taskbar progress object
                 var taskbarinfo = new System.Windows.Shell.TaskbarItemInfo();
                 taskbarinfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.Indeterminate;
-                this.TaskbarItemInfo = taskbarinfo;
+                TaskbarItemInfo = taskbarinfo;
             }
         }
 
         public void UpdateActivityBar(float curValue, float maxValue) {
-            if (this.ClosedByUser) {
+            if (ClosedByUser) {
                 return;
             }
 
@@ -656,7 +656,7 @@ namespace RevitScript.Runtime.Engine {
         }
 
         public void UpdateActivityBar(bool indeterminate) {
-            if (this.ClosedByUser) {
+            if (ClosedByUser) {
                 return;
             }
 
@@ -666,7 +666,7 @@ namespace RevitScript.Runtime.Engine {
         }
 
         public void UpdateProgressBar(float curValue, float maxValue) {
-            if (this.ClosedByUser) {
+            if (ClosedByUser) {
                 return;
             }
 
@@ -674,10 +674,10 @@ namespace RevitScript.Runtime.Engine {
 
             WaitReadyBrowser();
             if (ActiveDocument != null) {
-                if (!this.IsVisible) {
+                if (!IsVisible) {
                     try {
-                        this.Show();
-                        this.Focus();
+                        Show();
+                        Focus();
                     }
                     catch {
                         return;
@@ -722,16 +722,16 @@ namespace RevitScript.Runtime.Engine {
         }
 
         public void UpdateInlineWait() {
-            if (this.ClosedByUser) {
+            if (ClosedByUser) {
                 return;
             }
 
             WaitReadyBrowser();
             if (ActiveDocument != null) {
-                if (!this.IsVisible) {
+                if (!IsVisible) {
                     try {
-                        this.Show();
-                        this.Focus();
+                        Show();
+                        Focus();
                     }
                     catch {
                         return;
@@ -769,7 +769,7 @@ namespace RevitScript.Runtime.Engine {
             dispatcherTimer.Start();
         }
 
-        private void Window_Loaded(object sender, System.EventArgs e) {
+        private void Window_Loaded(object sender, EventArgs e) {
             var outputWindow = (ScriptConsole)sender;
             ScriptConsoleManager.AppendToOutputWindowList(this);
         }
@@ -785,7 +785,7 @@ namespace RevitScript.Runtime.Engine {
             outputWindow._navigateHandler = null;
         }
 
-        private void Window_Closed(object sender, System.EventArgs e) {
+        private void Window_Closed(object sender, EventArgs e) {
             var outputWindow = (ScriptConsole)sender;
 
             var grid = (Grid)outputWindow.Content;

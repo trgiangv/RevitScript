@@ -1,3 +1,4 @@
+using LibGit2Sharp;
 using NLog;
 
 namespace RevitScript.Runtime.Common {
@@ -9,7 +10,7 @@ namespace RevitScript.Runtime.Common {
 
         public string Path { get; set; }
 
-        public override string Message => String.Format("Path \"{0}\" is not a valid git clone.", Path);
+        public override string Message => $"Path \"{Path}\" is not a valid git clone.";
     }
 
     public enum UpdateStatus {
@@ -67,7 +68,7 @@ namespace RevitScript.Runtime.Common {
             var cloneOps = new CloneOptions() { Checkout = checkout, BranchName = branchName };
 
             // add username and password to clone options, if provided by user
-            if (creds is GitInstallerCredentials && creds.IsValid())
+            if (creds != null && creds.IsValid())
                 cloneOps.FetchOptions.CredentialsProvider = (_url, _usernameFromUrl, _credTypes) => creds.GetCredentials();
             try
             {
