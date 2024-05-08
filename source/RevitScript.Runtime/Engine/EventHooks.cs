@@ -58,8 +58,8 @@ namespace RevitScript.Runtime.Engine {
                     ScriptPath = eventHook.Script,
                     ConfigScriptPath = eventHook.Script,
                     CommandUniqueId = eventHook.UniqueId,
-                    CommandName = string.Format("hooks.{0}", Path.GetFileNameWithoutExtension(eventHook.Script)),
-                    CommandBundle = string.Format("{0}.hooks", eventHook.ExtensionName),
+                    CommandName = $"hooks.{Path.GetFileNameWithoutExtension(eventHook.Script)}",
+                    CommandBundle = $"{eventHook.ExtensionName}.hooks",
                     CommandExtension = eventHook.ExtensionName,
                     HelpSource = "",
                 },
@@ -132,11 +132,10 @@ namespace RevitScript.Runtime.Engine {
                 EventUtils.ToggleHooks<EventHooks>(this, uiApp, eventType, eventTarget: eventTarget);
             }
             catch (NotSupportedFeatureException) {
-                logger.Debug(string.Format("Hook type {0} not supported under this Revit version. Skipped.",
-                                           eventType.ToString()));
+                logger.Debug($"Hook type {eventType.ToString()} not supported under this Revit version. Skipped.");
             }
             catch (Exception) {
-                logger.Debug(string.Format("Failed registering hook type {0}", eventType.ToString()));
+                logger.Debug($"Failed registering hook type {eventType.ToString()}");
             }
         }
 
@@ -145,11 +144,10 @@ namespace RevitScript.Runtime.Engine {
                 EventUtils.ToggleHooks<EventHooks>(this, uiApp, eventType, eventTarget: eventTarget, toggle_on: false);
             }
             catch (NotSupportedFeatureException) {
-                logger.Debug(string.Format("Hook type {0} not supported under this Revit version. Skipped.",
-                                           eventType.ToString()));
+                logger.Debug($"Hook type {eventType.ToString()} not supported under this Revit version. Skipped.");
             }
             catch (Exception) {
-                logger.Debug(string.Format("Failed unregistering hook type {0}", eventType.ToString()));
+                logger.Debug($"Failed unregistering hook type {eventType.ToString()}");
             }
         }
 

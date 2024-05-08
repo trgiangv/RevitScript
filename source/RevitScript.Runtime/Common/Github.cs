@@ -138,6 +138,7 @@ namespace RevitScript.Runtime.Common {
                 );
         }
 
-        public static string GetRawUrl(string repoId, string branchName, string filePath) => string.Format(@"https://raw.githubusercontent.com/{0}/{1}/{2}", repoId, branchName, filePath);
+        public static string GetRawUrl(string repoId, string branchName, string filePath) =>
+            $@"https://raw.githubusercontent.com/{repoId}/{branchName}/{filePath}";
     }
 }

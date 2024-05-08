@@ -299,7 +299,7 @@ namespace RevitScript.Runtime.Engine {
 
         public override void ErrorReported(ScriptSource source, string message,
                                            SourceSpan span, int errorCode, Severity severity) {
-            Errors.Add(string.Format("{0} (line {1})", message, span.Start.Line));
+            Errors.Add($"{message} (line {span.Start.Line})");
         }
 
         public int Count => Errors.Count;

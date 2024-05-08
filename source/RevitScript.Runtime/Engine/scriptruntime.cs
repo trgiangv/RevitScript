@@ -25,18 +25,18 @@ namespace RevitScript.Runtime.Engine {
 
         public object EventSender {
             get => _eventSender;
-            set {
-                if (value != null) {
-                    // detemine sender type
-                    if (value.GetType() == typeof(UIControlledApplication))
-                        _eventSender = (UIControlledApplication)value;
-                    else if (value.GetType() == typeof(UIApplication))
-                        _eventSender = (UIApplication)value;
-                    else if (value.GetType() == typeof(ControlledApplication))
-                        _eventSender = (ControlledApplication)value;
-                    else if (value.GetType() == typeof(Application))
-                        _eventSender = (Application)value;
-                }
+            set
+            {
+                if (value == null) return;
+                // determine sender type
+                if (value.GetType() == typeof(UIControlledApplication))
+                    _eventSender = (UIControlledApplication)value;
+                else if (value.GetType() == typeof(UIApplication))
+                    _eventSender = (UIApplication)value;
+                else if (value.GetType() == typeof(ControlledApplication))
+                    _eventSender = (ControlledApplication)value;
+                else if (value.GetType() == typeof(Application))
+                    _eventSender = (Application)value;
             }
         }
         public object EventArgs { get; set; }
@@ -60,12 +60,12 @@ namespace RevitScript.Runtime.Engine {
 
     public class ScriptRuntime : IDisposable {
         // app handles
-        private UIApplication _uiApp = null;
-        private Application _app = null;
+        private UIApplication _uiApp;
+        private Application _app;
 
         // output window and stream
-        private WeakReference<ScriptConsole> _scriptOutput = new WeakReference<ScriptConsole>(null);
-        private WeakReference<ScriptIO> _outputStream = new WeakReference<ScriptIO>(null);
+        private WeakReference<ScriptConsole> _scriptOutput = new(null);
+        private WeakReference<ScriptIO> _outputStream = new(null);
 
         // dict for command result data
         private Dictionary<string, string> _resultsDict = null;
@@ -140,16 +140,11 @@ namespace RevitScript.Runtime.Engine {
                 // determine engine necessary to run this script
 
                 if (PyRevitScript.IsType(ScriptSourceFile, PyRevitScriptTypes.Python)) {
-                    string firstLine = "";
-                    if (File.Exists(ScriptSourceFile)) {
-                        using (StreamReader reader = new StreamReader(ScriptSourceFile)) {
-                            firstLine = reader.ReadLine();
-
-                            if (firstLine != null && (firstLine.Contains("python3") || firstLine.Contains("cpython")))
-                                return ScriptEngineType.CPython;
-                            else
-                                return ScriptEngineType.IronPython;
-                        }
+                    if (File.Exists(ScriptSourceFile))
+                    {
+                        using StreamReader reader = new StreamReader(ScriptSourceFile);
+                        
+                        return ScriptEngineType.IronPython;
                     }
                 }
 
@@ -157,39 +152,16 @@ namespace RevitScript.Runtime.Engine {
                     return ScriptEngineType.CSharp;
                 }
 
-                else if (PyRevitScript.IsType(ScriptSourceFile, PyRevitScriptTypes.VisualBasic)) {
-                    return ScriptEngineType.VisualBasic;
-                }
-
-                else if (PyRevitScript.IsType(ScriptSourceFile, PyRevitScriptTypes.Ruby)) {
-                    return ScriptEngineType.IronRuby;
-                }
-
                 else if (PyRevitScript.IsType(ScriptSourceFile, PyRevitScriptTypes.Dynamo)) {
                     return ScriptEngineType.DynamoBIM;
                 }
 
-                else if (PyRevitScript.IsType(ScriptSourceFile, PyRevitScriptTypes.Grasshopper)) {
-                    return ScriptEngineType.Grasshopper;
-                }
-
-                else if (PyRevitScript.IsType(ScriptSourceFile, PyRevitScriptTypes.RevitFamily)) {
-                    return ScriptEngineType.Content;
-                }
-
-                if (ScriptData.CommandBundle != null) {
-                    if (PyRevitBundle.IsType(ScriptData.CommandBundle, PyRevitBundleTypes.InvokeButton)) {
-                        return ScriptEngineType.Invoke;
-                    }
-                    else if (PyRevitBundle.IsType(ScriptData.CommandBundle, PyRevitBundleTypes.URLButton)) {
-                        return ScriptEngineType.HyperLink;
-                    }
-                }
-
-                // if the script is deleted during runtime
-                // ScriptSourceFile with be "" and runtime can not determine
-                // the engine type
-                return ScriptEngineType.Unknown;
+                if (ScriptData.CommandBundle == null) return ScriptEngineType.Unknown;
+                return PyRevitBundle.IsType(ScriptData.CommandBundle, PyRevitBundleTypes.InvokeButton) ? ScriptEngineType.Invoke :
+                    // if the script is deleted during runtime
+                    // ScriptSourceFile with be "" and runtime can not determine
+                    // the engine type
+                    ScriptEngineType.Unknown;
             }
         }
 
@@ -197,13 +169,9 @@ namespace RevitScript.Runtime.Engine {
             get {
                 switch (EngineType) {
                     case ScriptEngineType.IronPython: return EnvDict.PyRevitIPYVersion;
-                    case ScriptEngineType.CPython: return EnvDict.PyRevitCPYVersion;
                     case ScriptEngineType.CSharp: return EnvDict.PyRevitVersion;
                     case ScriptEngineType.Invoke: return EnvDict.PyRevitVersion;
-                    case ScriptEngineType.VisualBasic: return EnvDict.PyRevitVersion;
-                    case ScriptEngineType.IronRuby: return EnvDict.PyRevitVersion;
                     case ScriptEngineType.DynamoBIM: return EnvDict.PyRevitVersion;
-                    case ScriptEngineType.Grasshopper: return EnvDict.PyRevitVersion;
                     case ScriptEngineType.Content: return EnvDict.PyRevitVersion;
                     default: return EnvDict.PyRevitVersion;
                 }
@@ -275,47 +243,41 @@ namespace RevitScript.Runtime.Engine {
         public ScriptConsole OutputWindow {
             get {
                 // get ScriptOutput from the weak reference
-                ScriptConsole output;
-                var re = _scriptOutput.TryGetTarget(out output);
-                if (re && output != null)
+                var re = _scriptOutput.TryGetTarget(out var output);
+                if (re)
                     return output;
-                else {
-                    // Stating a new output window
-                    var newOutput = new ScriptConsole(ScriptRuntimeConfigs.DebugMode, UIApp);
+                // Stating a new output window
+                var newOutput = new ScriptConsole(ScriptRuntimeConfigs.DebugMode, UIApp);
 
-                    // Set output window title to command name
-                    newOutput.OutputTitle = ScriptData.CommandName;
+                // Set output window title to command name
+                newOutput.OutputTitle = ScriptData.CommandName;
 
-                    // Set window identity to the command unique identifier
-                    newOutput.OutputId = ScriptData.CommandUniqueId;
+                // Set window identity to the command unique identifier
+                newOutput.OutputId = ScriptData.CommandUniqueId;
 
-                    // set window app version header
-                    newOutput.AppVersion = string.Format(
-                        "{0}:{1}:{2}",
-                        EnvDict.PyRevitVersion,
-                        EngineType == ScriptEngineType.CPython ? EnvDict.PyRevitCPYVersion : EnvDict.PyRevitIPYVersion,
-                        EnvDict.RevitVersion
-                        );
+                // set window app version header
+                newOutput.AppVersion = string.Format(
+                    "{0}:{1}:{2}",
+                    EnvDict.PyRevitVersion,
+                    EnvDict.PyRevitIPYVersion,
+                    EnvDict.RevitVersion
+                );
 
-                    _scriptOutput = new WeakReference<ScriptConsole>(newOutput);
-                    return newOutput;
-                }
+                _scriptOutput = new WeakReference<ScriptConsole>(newOutput);
+                return newOutput;
             }
         }
 
         public ScriptIO OutputStream {
             get {
                 // get ScriptOutputStream from the weak reference
-                ScriptIO outputStream;
-                var re = _outputStream.TryGetTarget(out outputStream);
-                if (re && outputStream != null)
+                var re = _outputStream.TryGetTarget(out var outputStream);
+                if (re)
                     return outputStream;
-                else {
-                    // Setup the output stream
-                    ScriptIO newStream = new ScriptIO(this);
-                    _outputStream = new WeakReference<ScriptIO>(newStream);
-                    return newStream;
-                }
+                // Set up the output stream
+                ScriptIO newStream = new ScriptIO(this);
+                _outputStream = new WeakReference<ScriptIO>(newStream);
+                return newStream;
             }
         }
 

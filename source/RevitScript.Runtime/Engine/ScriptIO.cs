@@ -90,7 +90,7 @@ namespace RevitScript.Runtime.Engine {
                     // log buffer information in debug mode
                     if (PrintDebugInfo)
                         output.AppendText(
-                            string.Format("<---- W offset: {0} count: {1} ---->", offset, count),
+                            $"<---- W offset: {offset} count: {count} ---->",
                             ScriptConsoleConfigs.DefaultBlock);
 
                     if (count < 1024) {
@@ -176,7 +176,7 @@ namespace RevitScript.Runtime.Engine {
                     // log buffer information in debug mode
                     if (PrintDebugInfo)
                         output.AppendText(
-                            string.Format("<---- R offset: {0} count: {1} ---->", offset, count),
+                            $"<---- R offset: {offset} count: {count} ---->",
                             ScriptConsoleConfigs.DefaultBlock);
 
                     var inputBytes = OutputEncoding.GetBytes(input);
@@ -185,7 +185,7 @@ namespace RevitScript.Runtime.Engine {
                         Buffer.BlockCopy(inputBytes, 0, buffer, offset, copyCount);
                         if (PrintDebugInfo)
                             output.AppendText(
-                                string.Format("<---- R copied: \"{0}\" size: {1} ---->", input, copyCount),
+                                $"<---- R copied: \"{input}\" size: {copyCount} ---->",
                                 ScriptConsoleConfigs.DefaultBlock);
                     }
 

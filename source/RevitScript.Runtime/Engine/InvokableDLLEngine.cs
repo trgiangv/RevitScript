@@ -52,7 +52,7 @@ namespace RevitScript.Runtime.Engine {
             catch (Exception invokeEx) {
                 var dialog = new TaskDialog(PyRevitLabsConsts.ProductName);
                 dialog.MainInstruction = "Error invoking .NET external command.";
-                dialog.ExpandedContent = string.Format("{0}\n{1}", invokeEx.Message, invokeEx.StackTrace);
+                dialog.ExpandedContent = $"{invokeEx.Message}\n{invokeEx.StackTrace}";
                 dialog.Show();
                 return ScriptExecutorResultCodes.ExecutionException;
             }

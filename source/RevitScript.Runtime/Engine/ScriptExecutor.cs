@@ -79,10 +79,6 @@ namespace RevitScript.Runtime.Engine {
                         ExecuteManagedScript<IronPythonEngine>(ref runtime);
                         break;
 
-                    case ScriptEngineType.CPython:
-                        ExecuteManagedScript<CPythonEngine>(ref runtime);
-                        break;
-
                     case ScriptEngineType.CSharp:
                         ExecuteManagedScript<CLREngine>(ref runtime);
                         break;

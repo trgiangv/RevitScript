@@ -17,38 +17,38 @@ namespace RevitScript.Runtime.Engine {
     {
         public static string keyPrefix = PyRevitLabsConsts.ProductName.ToUpperInvariant();
 
-        public static string SessionUUID = string.Format("{0}_UUID", keyPrefix);
-        public static string RevitVersion = string.Format("{0}_APPVERSION", keyPrefix);
-        public static string Version = string.Format("{0}_VERSION", keyPrefix);
-        public static string Clone = string.Format("{0}_CLONE", keyPrefix);
-        public static string IPYVersion = string.Format("{0}_IPYVERSION", keyPrefix);
-        public static string CPYVersion = string.Format("{0}_CPYVERSION", keyPrefix);
+        public static string SessionUUID = $"{keyPrefix}_UUID";
+        public static string RevitVersion = $"{keyPrefix}_APPVERSION";
+        public static string Version = $"{keyPrefix}_VERSION";
+        public static string Clone = $"{keyPrefix}_CLONE";
+        public static string IPYVersion = $"{keyPrefix}_IPYVERSION";
+        public static string CPYVersion = $"{keyPrefix}_CPYVERSION";
 
-        public static string LoggingLevel = string.Format("{0}_LOGGINGLEVEL", keyPrefix);
-        public static string FileLogging = string.Format("{0}_FILELOGGING", keyPrefix);
+        public static string LoggingLevel = $"{keyPrefix}_LOGGINGLEVEL";
+        public static string FileLogging = $"{keyPrefix}_FILELOGGING";
 
-        public static string LoadedAssms = string.Format("{0}_LOADEDASSMS", keyPrefix);
-        public static string RefedAssms = string.Format("{0}_REFEDASSMS", keyPrefix);
+        public static string LoadedAssms = $"{keyPrefix}_LOADEDASSMS";
+        public static string RefedAssms = $"{keyPrefix}_REFEDASSMS";
 
-        public static string TelemetryState = string.Format("{0}_TELEMETRYSTATE", keyPrefix);
-        public static string TelemetryUTCTimeStamps = string.Format("{0}_TELEMETRYUTCTIMESTAMPS", keyPrefix);
-        public static string TelemetryFileDir = string.Format("{0}_TELEMETRYDIR", keyPrefix);
-        public static string TelemetryFilePath = string.Format("{0}_TELEMETRYFILE", keyPrefix);
-        public static string TelemetryServerUrl = string.Format("{0}_TELEMETRYSERVER", keyPrefix);
-        public static string TelemetryIncludeHooks = string.Format("{0}_TELEMETRYINCLUDEHOOKS", keyPrefix);
+        public static string TelemetryState = $"{keyPrefix}_TELEMETRYSTATE";
+        public static string TelemetryUTCTimeStamps = $"{keyPrefix}_TELEMETRYUTCTIMESTAMPS";
+        public static string TelemetryFileDir = $"{keyPrefix}_TELEMETRYDIR";
+        public static string TelemetryFilePath = $"{keyPrefix}_TELEMETRYFILE";
+        public static string TelemetryServerUrl = $"{keyPrefix}_TELEMETRYSERVER";
+        public static string TelemetryIncludeHooks = $"{keyPrefix}_TELEMETRYINCLUDEHOOKS";
         
-        public static string AppTelemetryState = string.Format("{0}_APPTELEMETRYSTATE", keyPrefix);
-        public static string AppTelemetryHandler = string.Format("{0}_APPTELEMETRYHANDLER", keyPrefix);
-        public static string AppTelemetryServerUrl = string.Format("{0}_APPTELEMETRYSERVER", keyPrefix);
-        public static string AppTelemetryEventFlags = string.Format("{0}_APPTELEMETRYEVENTFLAGS", keyPrefix);
+        public static string AppTelemetryState = $"{keyPrefix}_APPTELEMETRYSTATE";
+        public static string AppTelemetryHandler = $"{keyPrefix}_APPTELEMETRYHANDLER";
+        public static string AppTelemetryServerUrl = $"{keyPrefix}_APPTELEMETRYSERVER";
+        public static string AppTelemetryEventFlags = $"{keyPrefix}_APPTELEMETRYEVENTFLAGS";
 
-        public static string Hooks = string.Format("{0}_HOOKS", keyPrefix);
-        public static string HooksHandler = string.Format("{0}_HOOKSHANDLER", keyPrefix);
+        public static string Hooks = $"{keyPrefix}_HOOKS";
+        public static string HooksHandler = $"{keyPrefix}_HOOKSHANDLER";
 
-        public static string AutoUpdating = string.Format("{0}_AUTOUPDATE", keyPrefix);
-        public static string OutputStyleSheet = string.Format("{0}_STYLESHEET", keyPrefix);
-        public static string RibbonUpdator = string.Format("{0}_RIBBONUPDATOR", keyPrefix);
-        public static string TabColorizer = string.Format("{0}_TABCOLORIZER", keyPrefix);
+        public static string AutoUpdating = $"{keyPrefix}_AUTOUPDATE";
+        public static string OutputStyleSheet = $"{keyPrefix}_STYLESHEET";
+        public static string RibbonUpdator = $"{keyPrefix}_RIBBONUPDATOR";
+        public static string TabColorizer = $"{keyPrefix}_TABCOLORIZER";
     }
 
     public class EnvDictionary

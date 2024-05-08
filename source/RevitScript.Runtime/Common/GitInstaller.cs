@@ -69,11 +69,11 @@ namespace RevitScript.Runtime.Common {
 
             // add username and password to clone options, if provided by user
             if (creds != null && creds.IsValid())
-                cloneOps.FetchOptions.CredentialsProvider = (_url, _usernameFromUrl, _credTypes) => creds.GetCredentials();
+                cloneOps.FetchOptions.CredentialsProvider = (url, usernameFromUrl, credTypes) => creds.GetCredentials();
             try
             {
                 // attempt at cloning the repo
-                logger.Debug("Cloning \"{0}:{1}\" to \"{2}\"", repoPath, branchName, destPath);
+                logger.Debug("Cloning \"{}:{}\" to \"{}\"", repoPath, branchName, destPath);
                 Repository.Clone(repoPath, destPath, cloneOps);
 
                 // make repository object and return
@@ -99,8 +99,8 @@ namespace RevitScript.Runtime.Common {
                 // get local branch, or make one (and fetch from remote) if doesn't exist
                 Branch targetBranch = repo.Branches[branchName];
                 if (targetBranch is null) {
-                    logger.Debug(string.Format("Branch \"{0}\" does not exist in local clone. " +
-                                               "Attemping to checkout from remotes...", branchName));
+                    logger.Debug($"Branch \"{branchName}\" does not exist in local clone. " +
+                                 "Attemping to checkout from remotes...");
                     // lookup remotes for the branch otherwise
                     foreach (Remote remote in repo.Network.Remotes) {
                         string remoteBranchPath = remote.Name + "/" + branchName;
@@ -115,7 +115,7 @@ namespace RevitScript.Runtime.Common {
 
                 // now checkout the branch
                 logger.Debug("Checkign out branch \"{0}\"...", branchName);
-                Commands.Checkout(repo, branchName);
+                LibGit2Sharp.Commands.Checkout(repo, branchName);
             }
             catch (Exception ex) {
                 throw new PyRevitException(ex.Message, ex);
@@ -142,10 +142,10 @@ namespace RevitScript.Runtime.Common {
                 // Re: https://github.com/pyrevitlabs/pyRevit/issues/229
                 var checkoutOptions = new CheckoutOptions();
                 checkoutOptions.CheckoutModifiers = CheckoutModifiers.Force;
-                Commands.Checkout(repo, repo.Head, checkoutOptions);
+                LibGit2Sharp.Commands.Checkout(repo, repo.Head, checkoutOptions);
 
                 // now let's pull from the tracked remote
-                var res = Commands.Pull(repo,
+                var res = LibGit2Sharp.Commands.Pull(repo,
                                         new Signature("GitInstaller",
                                                       commiterEmail,
                                                       new DateTimeOffset(DateTime.Now)),
@@ -195,7 +195,7 @@ namespace RevitScript.Runtime.Common {
 
             // if it gets here with no errors, it means commit could not be found
             // I'm avoiding throwing an exception inside my own try:catch
-            throw new PyRevitException(String.Format("Can not find commit with hash \"{0}\"", commitHash));
+            throw new PyRevitException($"Can not find commit with hash \"{commitHash}\"");
         }
 
         // rebase current branch to a specific tag
@@ -221,7 +221,7 @@ namespace RevitScript.Runtime.Common {
 
             // if it gets here with no errors, it means commit could not be found
             // I'm avoiding throwing an exception inside my own try:catch
-            throw new PyRevitException(String.Format("Can not find commit targetted by tag \"{0}\"", tagName));
+            throw new PyRevitException($"Can not find commit targetted by tag \"{tagName}\"");
         }
 
         // change origin url to the provided url

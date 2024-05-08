@@ -260,8 +260,10 @@ namespace RevitScript.Runtime.Engine {
             baseGrid.Margin = new Thickness(0, 0, 0, 0);
             
             // activiy bar
-            var activityBarRow = new RowDefinition();
-            activityBarRow.Height = GridLength.Auto;
+            var activityBarRow = new Xceed.Wpf.Toolkit.Panels.RowDefinition
+            {
+                Height = GridLength.Auto
+            };
             baseGrid.RowDefinitions.Add(activityBarRow);
             activityBar = new ActivityBar();
             activityBar.Foreground = Brushes.White;
@@ -270,13 +272,15 @@ namespace RevitScript.Runtime.Engine {
 
             // Add the interop host control to the Grid
             // control's collection of child controls.
-            var rendererRow = new RowDefinition();
+            var rendererRow = new Xceed.Wpf.Toolkit.Panels.RowDefinition();
             baseGrid.RowDefinitions.Add(rendererRow);
             Grid.SetRow(host, 1);
 
             // standard input bar
-            var stdinRow = new RowDefinition();
-            stdinRow.Height = GridLength.Auto;
+            var stdinRow = new Xceed.Wpf.Toolkit.Panels.RowDefinition()
+            {
+                Height = GridLength.Auto
+            };
             baseGrid.RowDefinitions.Add(stdinRow);
             stdinBar = new InputBar();
             stdinBar.Visibility = Visibility.Collapsed;
@@ -385,7 +389,7 @@ namespace RevitScript.Runtime.Engine {
                 cssFilePath
                 );
             // create default html
-            renderer.DocumentText = string.Format("{0}<html><body></body></html>", dochead);
+            renderer.DocumentText = $"{dochead}<html><body></body></html>";
 
             while (ActiveDocument.Body == null)
                 System.Windows.Forms.Application.DoEvents();
@@ -428,7 +432,7 @@ namespace RevitScript.Runtime.Engine {
 
         public void ScrollToBottom() {
             if (ActiveDocument != null) {
-                ActiveDocument.Window.ScrollTo(0, ActiveDocument.Body.ScrollRectangle.Height);
+                ActiveDocument.Window?.ScrollTo(0, ActiveDocument.Body!.ScrollRectangle.Height);
             }
         }
 
@@ -447,7 +451,7 @@ namespace RevitScript.Runtime.Engine {
             // "\n"     --->    <br/>
             contents = ScriptConsoleConfigs.EscapeForOutput(contents);
             // :heart:  --->    \uFFFF (emoji unicode)
-            contents = Emojis.Emojize(contents);
+            // contents = Emojis.Emojize(contents);
 
             var htmlElement = ActiveDocument.CreateElement(HtmlElementType);
             htmlElement.InnerHtml = contents;
@@ -460,7 +464,7 @@ namespace RevitScript.Runtime.Engine {
 
             if (!_frozen) {
                 WaitReadyBrowser();
-                ActiveDocument.Body.AppendChild(ComposeEntry(OutputText, HtmlElementType));
+                ActiveDocument.Body?.AppendChild(ComposeEntry(OutputText, HtmlElementType));
                 ScrollToBottom();
             }
             else if (_lastDocumentBody != null) {
@@ -475,25 +479,10 @@ namespace RevitScript.Runtime.Engine {
                 case ScriptEngineType.IronPython:
                     errorHeader = ScriptConsoleConfigs.ToCustomHtmlTags(ScriptConsoleConfigs.IPYErrorHeader);
                     break;
-                case ScriptEngineType.CPython:
-                    errorHeader = ScriptConsoleConfigs.ToCustomHtmlTags(ScriptConsoleConfigs.CPYErrorHeader);
-                    break;
                 case ScriptEngineType.CSharp:
                     errorHeader = ScriptConsoleConfigs.ToCustomHtmlTags(ScriptConsoleConfigs.CSharpErrorHeader);
                     break;
                 case ScriptEngineType.Invoke:
-                    break;
-                case ScriptEngineType.VisualBasic:
-                    errorHeader = ScriptConsoleConfigs.ToCustomHtmlTags(ScriptConsoleConfigs.VBErrorHeader);
-                    break;
-                case ScriptEngineType.IronRuby:
-                    errorHeader = ScriptConsoleConfigs.ToCustomHtmlTags(ScriptConsoleConfigs.IRubyErrorHeader);
-                    break;
-                case ScriptEngineType.DynamoBIM:
-                    break;
-                case ScriptEngineType.Grasshopper:
-                    break;
-                case ScriptEngineType.Content:
                     break;
             }
             // add new line to header
@@ -502,16 +491,15 @@ namespace RevitScript.Runtime.Engine {
 
             // if this is a know debugger stop error
             // make a nice report
-            foreach (var dbgr in _supportedDebuggers) {
-                foreach(var stopFinder in dbgr.StopFinders) {
-                    if (stopFinder.Item1.IsMatch(OutputText)) {
-                        AppendText(
-                            errorHeader + stopFinder.Item2,
-                            ScriptConsoleConfigs.ErrorBlock
-                            );
-                        return;
-                    }
-                }
+            foreach (var stopFinder in _supportedDebuggers
+                         .SelectMany(dbgr => dbgr.StopFinders
+                             .Where(stopFinder => stopFinder.Item1.IsMatch(OutputText))))
+            {
+                AppendText(
+                    errorHeader + stopFinder.Item2,
+                    ScriptConsoleConfigs.ErrorBlock
+                );
+                return;
             }
 
             // otherwise report the error
@@ -698,7 +686,7 @@ namespace RevitScript.Runtime.Engine {
 
                 SetProgressBarVisibility(true);
 
-                var newWidthStyleProperty = string.Format("width:{0}%;", (curValue / maxValue) * 100);
+                var newWidthStyleProperty = $"width:{(curValue / maxValue) * 100}%;";
                 if (pbargraph.Style == null)
                     pbargraph.Style = newWidthStyleProperty;
                 else
@@ -884,7 +872,7 @@ namespace RevitScript.Runtime.Engine {
         }
 
         private string SaveContentsToTemp() {
-            string tempHtml = Path.Combine(UserEnv.UserTemp, string.Format("{0}.html", OutputTitle));
+            string tempHtml = Path.Combine(UserEnv.UserTemp, $"{OutputTitle}.html");
             var f = File.CreateText(tempHtml);
             f.Write(GetFullHtml());
             f.Close();
@@ -892,7 +880,7 @@ namespace RevitScript.Runtime.Engine {
         }
 
         private void OpenButton_Click(object sender, RoutedEventArgs e) {
-            Process.Start(string.Format("file:///{0}", SaveContentsToTemp()));
+            Process.Start($"file:///{SaveContentsToTemp()}");
         }
 
         private void PrintButton_Click(object sender, RoutedEventArgs e) {

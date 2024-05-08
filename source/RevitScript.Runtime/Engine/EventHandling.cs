@@ -11,6 +11,7 @@ using NLog;
 using UIFramework;
 using Xceed.Wpf.AvalonDock.Controls;
 using Xceed.Wpf.AvalonDock.Layout;
+using Color = System.Windows.Media.Color;
 using Control = System.Windows.Controls.Control;
 
 namespace RevitScript.Runtime.Engine {
@@ -1219,9 +1220,10 @@ namespace RevitScript.Runtime.Engine {
             }
         }
 
-        public static readonly List<Brush> DefaultBrushes = new List<Brush> {
-            PyRevitConsts.PyRevitAccentBrush,
-            PyRevitConsts.PyRevitBackgroundBrush,
+        public static readonly List<Brush> DefaultBrushes =
+        [
+            new SolidColorBrush(Color.FromArgb(byte.MaxValue, (byte)243, (byte)156, (byte)18)),
+            new SolidColorBrush(Color.FromArgb(byte.MaxValue, (byte)44, (byte)62, (byte)80)),
             Brushes.Blue,
             Brushes.SaddleBrown,
             Brushes.Gold,
@@ -1230,7 +1232,7 @@ namespace RevitScript.Runtime.Engine {
             Brushes.Aqua,
             Brushes.YellowGreen,
             Brushes.DeepPink
-        };
+        ];
 
         public static readonly uint DefaultTabColoringStyleIndex = 0;
         public static readonly uint DefaultFamilyTabColoringStyleIndex = 4;
@@ -1355,8 +1357,8 @@ namespace RevitScript.Runtime.Engine {
 
             // otherwise apply colors by order
             // if a rule for this doc exist, use that
-            var docSlot = _ruleSlots.Where(d => d.Id == docId).FirstOrDefault();
-            if (docSlot is RuleSlot) {
+            var docSlot = _ruleSlots.FirstOrDefault(d => d.Id == docId);
+            if (docSlot != null) {
                 Style style = tstyle.CreateStyle(tab, docSlot.Rule);
                 tab.Style = style;
             }
@@ -1365,13 +1367,13 @@ namespace RevitScript.Runtime.Engine {
                 RuleSlot slot = null;
 
                 // if rule slots has space for more slots,
-                if (_ruleSlots != null && _ruleSlots.Count() >= 1) {
+                if (_ruleSlots != null && _ruleSlots.Any()) {
                     int nextRuleIndex = _ruleSlots.Count();
                     // if rules slots are full
                     if (nextRuleIndex >= TabOrderRules.Count) {
                         // but have a previously used slot with no doc (slot was used but doc is closed now)
-                        var firstEmptySlot = _ruleSlots.Where(r => r.Id == -1).FirstOrDefault();
-                        if (firstEmptySlot is RuleSlot) {
+                        var firstEmptySlot = _ruleSlots.FirstOrDefault(r => r.Id == -1);
+                        if (firstEmptySlot != null) {
                             slot = firstEmptySlot;
                             slot.Id = docId;
                             slot.IsFamily = isFamilyTab;
@@ -1400,10 +1402,9 @@ namespace RevitScript.Runtime.Engine {
 
                 // if a slot is found, use the rule to create a new override
                 // framework style for the tab control
-                if (slot is RuleSlot) {
-                    Style style = tstyle.CreateStyle(tab, slot.Rule);
-                    tab.Style = style;
-                }
+                if (slot == null) return;
+                Style style = tstyle.CreateStyle(tab, slot.Rule);
+                tab.Style = style;
             }
         }
 #endif

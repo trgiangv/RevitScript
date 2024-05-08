@@ -345,7 +345,7 @@ namespace RevitScript.Runtime.Common.Extensions {
 
     public static class DateTimeExtensions {
         public static string NeatTime(this DateTime sourceDate) {
-            return String.Format("{0:dd/MM/yyyy HH:mm:ss}", sourceDate);
+            return $"{sourceDate:dd/MM/yyyy HH:mm:ss}";
         }
     }
 

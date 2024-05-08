@@ -275,11 +275,10 @@ namespace RevitScript.Runtime.Engine {
                     }
                     catch (NotSupportedFeatureException) {
                         logger.Debug(
-                            string.Format("Event telemetry {0} not supported under this Revit version. Skipped.",
-                                          eventType.ToString()));
+                            $"Event telemetry {eventType.ToString()} not supported under this Revit version. Skipped.");
                     }
                     catch {
-                        logger.Debug(string.Format("Failed registering event telemetry {0}", eventType.ToString()));
+                        logger.Debug($"Failed registering event telemetry {eventType.ToString()}");
                     }
                 }
 
@@ -293,11 +292,10 @@ namespace RevitScript.Runtime.Engine {
                     }
                     catch (NotSupportedFeatureException) {
                         logger.Debug(
-                            string.Format("Event telemetry {0} not supported under this Revit version. Skipped.",
-                                          eventType.ToString()));
+                            $"Event telemetry {eventType.ToString()} not supported under this Revit version. Skipped.");
                     }
                     catch {
-                        logger.Debug(string.Format("Failed unregistering event telemetry {0}", eventType.ToString()));
+                        logger.Debug($"Failed unregistering event telemetry {eventType.ToString()}");
                     }
         }
 

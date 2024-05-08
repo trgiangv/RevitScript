@@ -105,7 +105,7 @@ namespace RevitScript.Runtime.Engine {
                 // on any other errors
                 var dialog = new TaskDialog(PyRevitLabsConsts.ProductName);
                 dialog.MainInstruction = "Error executing Dynamo script.";
-                dialog.ExpandedContent = string.Format("{0}\n{1}", dynEx.Message, dynEx.StackTrace);
+                dialog.ExpandedContent = $"{dynEx.Message}\n{dynEx.StackTrace}";
                 dialog.Show();
                 return ScriptExecutorResultCodes.ExecutionException;
             }

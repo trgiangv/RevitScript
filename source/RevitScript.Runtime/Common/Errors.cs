@@ -52,7 +52,7 @@
 
         public string Path { get; private set; }
 
-        public override string Message => String.Format("\"{0}\" does not exist.", Path);
+        public override string Message => $"\"{Path}\" does not exist.";
     }
 
     public class pyRevitNoInternetConnectionException : PyRevitException {
@@ -66,7 +66,7 @@
 
         public string URL { get; private set; }
 
-        public override string Message => string.Format("Invalid URL {0}", URL);
+        public override string Message => $"Invalid URL {URL}";
     }
 
 }

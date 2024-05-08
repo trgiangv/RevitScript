@@ -4,7 +4,6 @@ namespace RevitScript.Runtime.Engine {
     public enum ScriptEngineType {
         Unknown,
         IronPython,
-        CPython,
         CSharp,
         Invoke,
         DynamoBIM,

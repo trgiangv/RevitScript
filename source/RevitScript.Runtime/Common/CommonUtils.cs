@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using NLog;
+using OpenMcdf;
 
 namespace RevitScript.Runtime.Common {
     public static class CommonUtils {
@@ -78,8 +79,8 @@ namespace RevitScript.Runtime.Common {
             }
             catch (Exception ex) {
                 throw new PyRevitException(
-                    string.Format("Error copying \"{0}\" to \"{1}\" | {2}", sourceDir, destDir, ex.Message)
-                    );
+                    $"Error copying \"{sourceDir}\" to \"{destDir}\" | {ex.Message}"
+                );
             }
         }
 
@@ -89,10 +90,9 @@ namespace RevitScript.Runtime.Common {
 
         public static void EnsureFile(string filePath) {
             EnsurePath(Path.GetDirectoryName(filePath));
-            if (!File.Exists(filePath)) {
-                var file = File.CreateText(filePath);
-                file.Close();
-            }
+            if (File.Exists(filePath)) return;
+            var file = File.CreateText(filePath);
+            file.Close();
         }
 
         public static string EnsureFileExtension(string filepath, string extension) => Path.ChangeExtension(filepath, extension);
@@ -123,7 +123,7 @@ namespace RevitScript.Runtime.Common {
         }
 
         public static HttpWebRequest GetHttpWebRequest(string url) {
-            logger.Debug("Building HTTP request for: \"{0}\"", url);
+            logger.Debug("Building HTTP request for: \"{}\"", url);
             if (CheckInternetConnection()) {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);

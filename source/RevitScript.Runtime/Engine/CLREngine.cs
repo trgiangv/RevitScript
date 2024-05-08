@@ -47,7 +47,10 @@ namespace RevitScript.Runtime.Engine
                 else
                     Console.WriteLine(message);
             }
-            catch { }
+            catch
+            {
+                // ignored
+            }
         }
     }
 
@@ -109,7 +112,7 @@ namespace RevitScript.Runtime.Engine
                         string errorReport = string.Empty;
                         foreach (var errline in errors)
                             errorReport += $"{errline}\n";
-                        errorReport += string.Format("\nTrace:\n{0}\n{1}", compileEx.Message, traceMessage);
+                        errorReport += $"\nTrace:\n{compileEx.Message}\n{traceMessage}";
                         dialog.ExpandedContent = errorReport;
                         dialog.Show();
                     }
@@ -129,10 +132,7 @@ namespace RevitScript.Runtime.Engine
                         var resultCode = ExecuteExternalCommand(scriptAssm, null, ref runtime);
                         if (resultCode == ScriptExecutorResultCodes.ExternalInterfaceNotImplementedException)
                             TaskDialog.Show(PyRevitLabsConsts.ProductName,
-                                string.Format(
-                                    "Can not find any type implementing IExternalCommand in assembly \"{0}\"",
-                                    scriptAssm.Location
-                                    ));
+                                $"Can not find any type implementing IExternalCommand in assembly \"{scriptAssm.Location}\"");
                         return resultCode;
                     }
                     catch (Exception execEx)
@@ -143,7 +143,7 @@ namespace RevitScript.Runtime.Engine
 
                         var dialog = new TaskDialog(PyRevitLabsConsts.ProductName);
                         dialog.MainInstruction = "Error executing .NET script.";
-                        dialog.ExpandedContent = string.Format("{0}\n{1}", traceMessage, execEx.StackTrace);
+                        dialog.ExpandedContent = $"{traceMessage}\n{execEx.StackTrace}";
                         dialog.Show();
 
                         return ScriptExecutorResultCodes.ExecutionException;
@@ -207,8 +207,8 @@ namespace RevitScript.Runtime.Engine
             // create output assembly
             string outputAssembly = Path.Combine(
                 UserEnv.UserTemp,
-                string.Format("{0}_{1}.dll", runtime.ScriptData.CommandName, runtime.ScriptSourceFileSignature)
-                );
+                $"{runtime.ScriptData.CommandName}_{runtime.ScriptSourceFileSignature}.dll"
+            );
 
             List<string> defines = new List<string> {
                 $"REVIT{runtime.App.VersionNumber}",
@@ -220,36 +220,21 @@ namespace RevitScript.Runtime.Engine
             };
 
             // determine which compiler to use
-            switch (runtime.EngineType)
+            return runtime.EngineType switch
             {
-                case ScriptEngineType.CSharp:
-                    return CompileCSharp(runtime.ScriptSourceFile, outputAssembly, refFiles, defines, runtime.ScriptRuntimeConfigs.DebugMode, out errors);
-                case ScriptEngineType.VisualBasic:
-                    return CompileVB(runtime.ScriptSourceFile, outputAssembly, refFiles, defines, runtime.ScriptRuntimeConfigs.DebugMode, out errors);
-                default:
-                    throw new PyRevitException("Specified language does not have a compiler.");
-            }
+                ScriptEngineType.CSharp => CompileCSharp(runtime.ScriptSourceFile, outputAssembly, refFiles, defines,
+                    runtime.ScriptRuntimeConfigs.DebugMode, out errors),
+                _ => throw new PyRevitException("Specified language does not have a compiler.")
+            };
         }
 
         private static Assembly CompileCSharp(string sourceFile, string outputPath, List<string> refFiles, List<string> defines, bool debug, out List<string> errors)
         {
             return CodeCompiler.CompileCSharpToAssembly(
-                sourceFiles: new string[] { sourceFile },
+                sourceFiles: new[] { sourceFile },
                 assemblyName: Path.GetFileName(outputPath),
                 references: refFiles,
                 defines: defines,
-                debug,
-                out errors
-                );
-        }
-
-        private static Assembly CompileVB(string sourceFile, string outputPath, List<string> refFiles, List<string> defines, bool debug, out List<string> errors)
-        {
-            return CodeCompiler.CompileVisualBasicToAssembly(
-                sourceFiles: new string[] { sourceFile },
-                assemblyName: Path.GetFileName(outputPath),
-                references: refFiles,
-                defines: defines.Select(x => new KeyValuePair<string, object>(x, null)),
                 debug,
                 out errors
                 );
@@ -259,19 +244,17 @@ namespace RevitScript.Runtime.Engine
         {
             foreach (Type assmType in GetTypesSafely(assmObj))
             {
-                if (assmType.IsClass)
+                if (!assmType.IsClass) continue;
+                // find the appropriate type and execute
+                if (className != null)
                 {
-                    // find the appropriate type and execute
-                    if (className != null)
-                    {
-                        if (assmType.Name == className)
-                            return ExecuteExternalCommandType(assmType, ref runtime);
-                        else
-                            continue;
-                    }
-                    else if (assmType.GetInterfaces().Contains(typeof(IExternalCommand)))
+                    if (assmType.Name == className)
                         return ExecuteExternalCommandType(assmType, ref runtime);
+                    continue;
                 }
+
+                if (assmType.GetInterfaces().Contains(typeof(IExternalCommand)))
+                    return ExecuteExternalCommandType(assmType, ref runtime);
             }
 
             return ScriptExecutorResultCodes.ExternalInterfaceNotImplementedException;

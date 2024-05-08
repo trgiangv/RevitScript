@@ -3,6 +3,7 @@ using System.Management;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
+using DotNetVersionFinder;
 using NLog;
 
 
@@ -39,7 +40,7 @@ namespace RevitScript.Runtime.Common {
         }
 
         public static Version GetInstalledDotNetVersion() {
-            return DotNetVersion.Find();
+            return DotNetVersion.GetVersion();
         }
 
         public static List<string> GetInstalledDotnetTargetPacks() {
