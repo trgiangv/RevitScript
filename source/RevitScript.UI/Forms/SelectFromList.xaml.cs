@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Navigation;
 using HandyControl.Themes;
 
-namespace RevitScript.UI.Forms;
+namespace RevitScript.UI.Views;
 
 public partial class SelectFromList : Window
 {

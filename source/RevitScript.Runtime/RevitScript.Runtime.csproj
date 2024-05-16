@@ -54,15 +54,19 @@
         <PackageReference Include="Nice3point.Revit.Api.UIFrameworkServices" Version="$(RevitVersion).*"/>
         
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.*"/>
-        <PackageReference Include="NLog" Version="5.3.2" />
-        <PackageReference Include="OpenMcdf" Version="2.3.1" />
         <PackageReference Include="pythonnet" Version="3.0.3" />
         <PackageReference Include="ricaun.Revit.CefSharp" Version="$(RevitVersion).*" IncludeAssets="build; compile" PrivateAssets="All" />
-        <PackageReference Include="Xceed.Products.Wpf.Toolkit.AvalonDock" Version="4.6.24151.1544" />
     </ItemGroup>
 
     <ItemGroup>
       <Reference Include="System.Windows.Forms" />
     </ItemGroup>
+
+<!--    <ItemGroup>-->
+<!--      <None Include="Views\ActivityBar.xaml" />-->
+<!--      <None Include="Views\InputBar.xaml" />-->
+<!--      <None Include="Views\LabelledTextBox.xaml" />-->
+<!--      <None Include="Views\SpinnerDotCircle.xaml" />-->
+<!--    </ItemGroup>-->
 
 </Project>

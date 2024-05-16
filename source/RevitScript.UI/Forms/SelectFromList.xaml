@@ -1,11 +1,10 @@
 ﻿<Window
-    x:Class="RevitScript.UI.Forms.SelectFromList"
+    x:Class="RevitScript.UI.Views.SelectFromList"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    xmlns:local="clr-namespace:RevitScript.UI.Forms"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Icon="../Resources/Icons/DCMvn_Logo_155x155.png"
     Title="SelectFromList"
