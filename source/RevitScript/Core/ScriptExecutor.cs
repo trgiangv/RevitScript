@@ -17,8 +17,8 @@ public class ScriptExecutor(UIApplication uiApplication, bool fullFrame = false)
     [PublicAPI]
     public static string EngineVersion {
         get {
-            var assemblyVersion = Assembly.GetAssembly(typeof(ScriptExecutor)).GetName().Version;
-            return $"{assemblyVersion.Minor}{assemblyVersion.Build}{assemblyVersion.Revision}";
+            var assemblyVersion = Assembly.GetAssembly(typeof(ScriptExecutor))?.GetName().Version;
+            return $"{assemblyVersion!.Minor}{assemblyVersion.Build}{assemblyVersion.Revision}";
         }
     }
 
@@ -126,12 +126,7 @@ public class ScriptExecutor(UIApplication uiApplication, bool fullFrame = false)
     public void AddEmbeddedLib(ScriptEngine engine) {
         // use embedded python lib
         var asm = GetType().Assembly;
-#if REVIT2020
-        string resName = "ironpython.stdlib.2.7.12.zip";
-
-#elif REVIT2021_OR_GREATER
             string resName = "ironpython.stdlib.3.4.1.zip";
-#endif
         var resQuery = from name in asm.GetManifestResourceNames()
             where name.ToLowerInvariant().EndsWith(resName)
             select name;

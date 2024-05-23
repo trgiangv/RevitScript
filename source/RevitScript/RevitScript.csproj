@@ -42,33 +42,58 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="Resources\StdLib\IronPython.StdLib.3.4.1.zip" Condition="$(RevitVersion) != '2020'"/>
-      <EmbeddedResource Include="Resources\StdLib\IronPython.StdLib.2.7.12.zip" Condition="$(RevitVersion) == '2020'"/>
+      <EmbeddedResource Include="Resources\StdLib\IronPython.StdLib.3.4.1.zip"/>
     </ItemGroup>
 
     <ItemGroup>
         
         <!-- python packages-->
         <PackageReference Include="GShark" Version="2.3.1" />
-        <PackageReference Include="IronPython" Version="2.7.12" Condition="$(RevitVersion) == '2020'" />
-        <PackageReference Include="IronPython" Version="3.4.1" Condition="$(RevitVersion) != '2020'"/>
+        <PackageReference Include="IronPython" Version="3.4.1"/>
         <PackageReference Include="MiniExcel" Version="1.31.3" />
         
         <!-- Revit packages-->
         <PackageReference Include="Nice3point.Revit.Build.Tasks" Version="1.*" />
         <PackageReference Include="Nice3point.Revit.Toolkit" Version="$(RevitVersion).*" />
         <PackageReference Include="Nice3point.Revit.Extensions" Version="$(RevitVersion).*" />
-        <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).*" />
-        <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitVersion).*" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.*" />
         
         <!-- Serilog packages-->
         <PackageReference Include="Serilog.Sinks.Debug" Version="2.*" />
-        <PackageReference Include="Serilog.Extensions.Hosting" Version="7.*" Condition="$(RevitVersion) == '2025'" />
-        <PackageReference Include="Serilog.Extensions.Hosting" Version="8.*" Condition="$(RevitVersion) != '' And $(RevitVersion) &lt; '2025'" />
-<!--        <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.*" Condition="$(RevitVersion) == '2025'" />-->
-<!--        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.*" Condition="$(RevitVersion) != '' And $(RevitVersion) &lt; '2025'" />-->
     </ItemGroup>
+    
+    <Choose>
+        <When Condition="$(Configuration.Contains('R25'))">
+            <ItemGroup>
+                <PackageReference Include="ModPlus.Revit.API.2025" Version="4.0.0" />
+            </ItemGroup>
+        </When>
+        <When Condition="$(Configuration.Contains('R24'))">
+            <ItemGroup>
+                <PackageReference Include="ModPlus.Revit.API.2024" Version="4.0.0" />
+            </ItemGroup>
+        </When>
+        <When Condition="$(Configuration.Contains('R23'))">
+            <ItemGroup>
+                <PackageReference Include="ModPlus.Revit.API.2023" Version="4.0.0" />
+            </ItemGroup>
+        </When>
+        <When Condition="$(Configuration.Contains('R22'))">
+            <ItemGroup>
+                <PackageReference Include="ModPlus.Revit.API.2022" Version="4.0.0" />
+            </ItemGroup>
+        </When>
+        <When Condition="$(Configuration.Contains('R21'))">
+            <ItemGroup>
+                <PackageReference Include="ModPlus.Revit.API.2021" Version="4.0.0" />
+            </ItemGroup>
+        </When>
+        <When Condition="$(Configuration.Contains('R20'))">
+            <ItemGroup>
+                <PackageReference Include="ModPlus.Revit.API.2025" Version="4.0.0" />
+            </ItemGroup>
+        </When>
+    </Choose>
 
     <ItemGroup>
         <Resource Include="Resources\Icons\RibbonIcon16.png" />

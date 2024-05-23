@@ -3,6 +3,8 @@ using System.IO;
 using System.Reflection;
 using Autodesk.Revit.Attributes;
 using Nice3point.Revit.Toolkit.External;
+using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace RevitScript.Commands;
 
